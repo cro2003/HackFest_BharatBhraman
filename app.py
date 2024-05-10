@@ -6,6 +6,7 @@ from datetime import timedelta
 import time
 import flight
 import location
+import train
 
 load_dotenv()
 app = Flask(__name__)
@@ -56,8 +57,18 @@ def flightDetails():
 
 @app.route('/train-details', methods=['GET','POST'])
 def trainDetails():
-    return f"{request.args['sessionId']}"
-
+    sessionId = request.args['sessionId']
+    trainData = train.getTrainDetails(session[sessionId]['sourceData']['city'], session[sessionId]['destData']['city'], f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}")
+    if trainData==[] or (not isinstance(trainData, list) and trainData.get('error')!=None):
+        flash("No Train Available", "error")
+        return redirect(url_for('index'))
+    data = {"sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData'],
+            "deptDate": f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}",
+            "flightData": session[sessionId]['sourceData'], "trainData": trainData}
+    data["destinationData"]["city-en"] = data["destinationData"]["city"]
+    return render_template('chooseTrain.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
+                           pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
+                                     "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseTrain"]})
 def generateId(source, destination):
     return f"{str(round(time.time()*1000))}{source[:2]}{destination[:2]}"
 
