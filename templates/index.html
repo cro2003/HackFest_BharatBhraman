@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+    <script>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                alert("{{ messages[0] }}");
+            {% endif %}
+        {% endwith %}
+    </script>
 </head>
 <body>
   <header id="header">
