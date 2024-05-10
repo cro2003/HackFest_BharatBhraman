@@ -57,6 +57,7 @@ def flightDetails():
 @app.route('/train-details', methods=['GET','POST'])
 def trainDetails():
     return f"{request.args['sessionId']}"
+
 def generateId(source, destination):
     return f"{str(round(time.time()*1000))}{source[:2]}{destination[:2]}"
 
