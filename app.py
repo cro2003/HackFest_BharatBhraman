@@ -23,6 +23,7 @@ def index():
 
 @app.route('/plan-trip', methods=['POST'])
 def planTrip():
+    prefferedLang = request.form['selectedLang'].strip()
     source = request.form['from']
     destination = request.form['to']
     date = request.form['date']
@@ -32,7 +33,7 @@ def planTrip():
         flash("Invalid Source or Destination", "error")
         return redirect(url_for('index'))
     sessionId = generateId(source, destination)
-    session[sessionId] = {"sourceData": sourceData, "destData": destData, "deptDate": date}
+    session[sessionId] = {"sourceData": sourceData, "destData": destData, "deptDate": date, "prefferedLang": prefferedLang}
     if sourceData['country'] == "India":
         return redirect(url_for('trainDetails', sessionId=sessionId))
     return redirect(url_for('flightDetails', sessionId=sessionId))
@@ -54,6 +55,8 @@ def getLocation(query):
     if response == []:
         return []
     return response[0]
+
+
 
 if __name__ == "__main__":
     app.run()
