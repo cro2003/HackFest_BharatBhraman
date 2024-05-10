@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+</head>
+<body>
+  <header id="header">
+    <nav class="neumorphic-nav">
+      <div class="logo">
+        <h3 id="bb-logo">Bhara<span>tभ्र</span>मण</h3>
+      </div>
+    <div id="nav-c">
+      <a id="home" href="/" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-home-fill" ></i>{{ pageLang["translatedData"]["home"] }}</a>
+        <a id="flight" class="buy" data-tilt data-tilt-scale="1.08" href="/flight"><i class="ri-flight-takeoff-line"></i>{{ pageLang["translatedData"]["flight"] }}</a>
+        <a id="train" href="/train" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-train-fill"></i>{{ pageLang["translatedData"]["train"] }}</a>
+        <a id="hotel" class="buy" data-tilt data-tilt-scale="1.08"href="/hotels"><i class="ri-hotel-fill"></i>{{ pageLang["translatedData"]["hotel"] }}</a>
+      <a id="multi-destination" href="/round_trip" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-checkbox-multiple-fill"></i>{{ pageLang["translatedData"]["multi-destination"] }}</a>
+    </div>
+      <div id="logo-part2">
+          <div class="form-group">
+      <select id="language" placeholder="language"   name="language" required  class="buy" data-tilt data-tilt-scale="1.02">
+        <option selected value="{{ pageLang["language"] }}">{{ pageLang["codeToLang"][pageLang["language"]] }}</option>
+        {% for languages in supportedLanguage %}
+            {% if supportedLanguage[languages]== pageLang["language"] %}
+            {% else %}
+            <option value="{{ supportedLanguage[languages] }}">{{ languages }}</option>
+            {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+
+
+        <a href="/log-in" id="login" class="login" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-user-fill"></i>{{ pageLang["translatedData"]["login"] }}</a>
+      </div>
+
+
+    </nav>
+  </header>
+  <!-- <div id="circl"></div> -->
+
+    <div id="main">
+
+        <div id="page1">
+
+              <img id="page1image"src="{{ url_for('static', filename='images/index_flightIcon.jpg') }}" alt="" srcset="">
+              <div id="center">
+              <div id="right">
+                <h1 id="right_h1">{{ pageLang["translatedData"]["right_h1"] }}</h1>
+
+                <div id="gooey">
+
+                </div>
+                <form action="/plan-trip" method="post">
+                <div class="neumorphic-box">
+                    <div class="section1" >
+                      <input type="text" list="from-cities"
+                      id="from" name="from" placeholder="{{ pageLang["translatedData"]["from"] }}" />
+            <datalist id="from-cities">
+                {% for cities in pageLang["translatedData"]["from-cities"] %}
+                    <option value="{{ cities }}">{{ cities }}</option>
+                {% endfor %}
+               </datalist>
+                    </div>
+
+                    <div class="section1" >
+                      <input type="text" list="to-cities"
+                      id="to" name="to" placeholder="{{ pageLang["translatedData"]["to"] }}" >
+            <datalist id="to-cities">
+                {% for cities in pageLang["translatedData"]["to-cities"] %}
+                    <option value="{{ cities }}">{{ cities }}</option>
+                {% endfor %}
+               </datalist>
+                    </div>
+                    <div class="section">
+                      <input type="date" id="date" name="date">
+                    </div>
+                    <div class="section" id="section3">
+                      <button id="submit" name="submit">{{ pageLang["translatedData"]["submit"] }}</button>
+                    <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang["language"] }}">
+                        <input hidden name="reqType" id="reqType" value="choosePlan">
+                    </div>
+                  </form>
+
+
+
+
+
+                  </div>
+
+            </div>
+
+                <div id="left">
+             <img id="leftimage" src="https://i.pinimg.com/564x/d4/ec/0c/d4ec0c90971b03bbf0a750139d5cacc2.jpg" alt="">
+                </div>
+
+              </div>
+        </div>
+        <div id="page2">
+
+            <div id="circle">
+                <div class="stripe str7"><div class="first"> <div class="smcircle"></div> </div>
+                <div class="second">
+
+                   <a href="/Delhi" > <h2 id="delhi">{{ pageLang["translatedData"]["delhi"] }}</h2></a>
+
+                    <h4>01</h4>
+
+                </div>
+                <img class="image" id="image1"src="https://i.pinimg.com/564x/5c/6a/15/5c6a15c2698810da935ab4ffd878b63e.jpg" alt="" srcset="">
+
+
+
+            </div>
+                <div class="stripe str0"><div class="first"> <div class="smcircle"></div> </div>
+                <div class="second">
+                    <a href="/Kerala" >
+                    <h2 id="kerala">{{ pageLang["translatedData"]["kerala"] }}</h2></a>
+                    <h4>02</h4>
+
+                </div>
+                <img class="image" id="image2"src="https://i.pinimg.com/236x/c0/07/5f/c0075ffb6458db5768f9985537555464.jpg" alt="">
+            </div>
+            <div class="stripe str2"><div class="first"> <div class="smcircle"></div></div>
+            <div class="second">
+                <a href="/Mumbai" >
+                <h2 id="mumbai">{{ pageLang["translatedData"]["mumbai"] }}</h2></a>
+                <h4>03</h4>
+            </div>
+            <img class="image" id="image2"src="https://i.pinimg.com/236x/92/31/7b/92317ba54a6f432d19eb1ecda1045ae9.jpg" alt="">
+
+        </div>
+        <div class="stripe str3"><div class="first"> <div class="smcircle"></div></div>
+        <div class="second">
+            <a href="/Jaipur" >
+            <h2 id="jaipur">{{ pageLang["translatedData"]["jaipur"] }}</h2></a>
+            <h4>04</h4>
+
+        </div>
+        <img class="image" id="image2"src="https://i.pinimg.com/736x/af/7f/86/af7f86a574d8e843a6cc6e84eda4ca71.jpg" alt="">
+
+    </div>
+                <div class="stripe str1"><div class="first"> <div class="smcircle"></div> </div>
+                <div class="second">
+                    <a href="/Agra" >
+                    <h2 id="agra">{{ pageLang["translatedData"]["agra"] }}</h2></a>
+                    <h4>05</h4>
+
+                </div>
+                <img class="image" id="image2"src="https://i.pinimg.com/564x/a7/1c/b6/a71cb6ea0827ce6991db703bbd7dd2bd.jpg" alt="">
+
+            </div>
+
+
+                <div class="stripe str4"><div class="first"> <div class="smcircle"></div></div>
+                <div class="second">
+                    <a href="/Kolkata" >
+                    <h2 id="kolkata">{{ pageLang["translatedData"]["kolkata"] }}</h2></a>
+                    <h4>06</h4>
+                </div>
+                <img class="image" id="image2"src="https://i.pinimg.com/236x/a2/c4/e5/a2c4e521211c3013d4c55dc634adaf84.jpg" alt="">
+
+            </div>
+                <div class="stripe str5"><div class="first"> <div class="smcircle"></div></div>
+                <div class="second">
+                    <a href="/Goa">
+                    <h2 id="goa">{{ pageLang["translatedData"]["goa"] }}</h2></a>
+                    <h4>07</h4>
+
+                </div>
+                <img class="image" id="image2"src="https://i.pinimg.com/236x/0c/d3/9d/0cd39df71f8306c9751fbc85b33df276.jpg" alt="">
+
+            </div>
+            <div class="stripe str6"><div class="first"> <div class="smcircle"></div></div>
+            <div class="second">
+                <a href="/Varanasi" >
+                    <h2 id="varanasi">{{ pageLang["translatedData"]["varanasi"] }}</h2>
+                </a>
+
+                <h4>08</h4>
+            </div>
+            <img class="image" id="image2"src="https://i.pinimg.com/564x/2d/ec/f0/2decf0d2566eb3c13d122171e4a19dbd.jpg" alt="">
+
+        </div>
+            </div>
+            <div id="sec">
+                <h1>{{ pageLang["translatedData"]["sec"][0] }}
+                    <br>{{ pageLang["translatedData"]["sec"][1] }}
+                <br>{{ pageLang["translatedData"]["sec"][2] }}
+                </h1>
+            </div>
+            <h1></h1>
+            <div id="panel">
+                <div class="mncircle" id="mn1"></div>
+                <div class="mncircle" id="mn2"></div>
+                <div class="mncircle" id="mn3"></div>
+                <div class="mncircle" id="mn4"></div>
+                <div class="mncircle" id="mn5"></div>
+                <div class="mncircle" id="mn6"></div>
+                 <div class="mncircle" id="mn7"></div>
+                 <div class="mncircle" id="mn8"></div>
+
+
+            </div>
+            <div id="sec1">
+                <h2 id="abc">{{ pageLang["translatedData"]["short-info-agra"] }}</h3>
+            </div>
+        </div>
+        <div id="page3" class="abc">
+          <!-- <h1>Here are some of the most beautiful places you can visit in Bhopal</h1> -->
+          <div id="page3center">
+          <div id="page3left">
+           <h1 id="bhopal">{{ pageLang["translatedData"]["bhopal"] }}</h1>
+           <h3>{{ pageLang["translatedData"]["long-info-bhopal"] }}</h3>
+          </div>
+          <div id="page3right">
+           <div class="page3box" id="box1first">
+
+           </div>
+           <div class="page3box" id="box1second"></div>
+          </div>
+          </div>
+
+          </div>
+          <div id="page3">
+            <!-- <h1>Here are some of the most beautiful places you can visit in Bhopal</h1> -->
+            <div id="page3center">
+
+            <div id="page3right">
+             <div class="page3box" id="box2first">
+
+             </div>
+             <div class="page3box" id="box2second"></div>
+             <!-- <div class="page3box" id="box1third"></div> -->
+            </div>
+            <div id="page3left" class="page3left1">
+              <h1 id="delhi">{{ pageLang["translatedData"]["delhi"] }}</h1>
+              <h3>{{ pageLang["translatedData"]["long-info-delhi"] }}</h3>
+             </div>
+            </div>
+
+
+            </div>
+            <footer>
+              <div class="footer">
+              <div class="row">
+              <a href="https://www.google.co.in/maps"><i class="ri-map-pin-line"></i></a>
+              <a href="https://www.olacabs.com/"><i class="ri-taxi-line"></i></a>
+              <a href="/home"><i class="ri-home-line"></i></a>
+              <a href="/flight"><i class="ri-flight-takeoff-line"></i></a>
+              <a href="/train"><i class="ri-train-line"></i></a>
+
+              </div>
+
+              <div class="row">
+              <ul>
+              <li><a href="#">Maps and directions</a></li>
+              <li><a href="#">Cab services</a></li>
+              <li><a href="#">Visit home</a></li>
+              <li><a href="#">Flights</a></li>
+              <li><a href="#">Trains</a></li>
+              </ul>
+              </div>
+              </div>
+              </footer>
+    <form name="languageSelector" id="languageSelector" action="/" method="post">
+          <input hidden name="selectedLang" id="lang" value="{{ pageLang["language"] }}">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" integrity="sha512-f8mwTB+Bs8a5c46DEm7HQLcJuHMBaH/UFlcgyetMqqkvTcYg4g5VXsYR71b3qC82lZytjNYvBj2pf0VekA9/FQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js" integrity="sha512-A64Nik4Ql7/W/PJk2RNOmVyC/Chobn5TY08CiKEX50Sdw+33WTOpPJ/63bfWPl0hxiRv1trPs5prKO8CpA7VNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" integrity="sha512-RX/OFugt/bkgwRQg4B22KYE79dQhwaPp2IZaA/YyU3GMo/qY7GrXkiG6Dvvwnds6/DefCfwPTgCXnaC6nAgVYw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const dropdown = document.getElementById('language');
+        dropdown.addEventListener('change', (event) => {
+            const selectedValue = event.target.value;
+            document.querySelector("#lang").value = selectedValue;
+            document.getElementById('languageSelector').submit(); //<form>
+        });
+        function myFunction() {
+            document.getElementById("abc").innerHTML = "{{ pageLang["translatedData"]["short-info-delhi"] }}"
+          }
+
+
+          document.getElementById("mn2").addEventListener("click", myFunction1);
+
+        function myFunction1() {
+            document.getElementById("abc").innerHTML = "{{ pageLang["translatedData"]["short-info-kerala"] }}"
+          }
+
+          document.getElementById("mn3").addEventListener("click", myFunction2);
+
+        function myFunction2() {
+            document.getElementById("abc").innerHTML = "{{ pageLang["translatedData"]["short-info-mumbai"] }}"
+          }
+
+          document.getElementById("mn4").addEventListener("click", myFunction4);
+
+        function myFunction4() {
+            document.getElementById("abc").innerHTML = "{{ pageLang["translatedData"]["short-info-jaipur"] }}"
+        }
+        document.getElementById("mn5").addEventListener("click", myFunction5);
+
+        function myFunction5() {
+            document.getElementById("abc").innerHTML = "{{ pageLang["translatedData"]["short-info-agra"] }}"
+        }
+
+        document.getElementById("mn6").addEventListener("click", myFunction6);
+
+        function myFunction6() {
+            document.getElementById("abc").innerHTML = "{{ pageLang["translatedData"]["short-info-kolkata"] }}"
+        }
+
+        document.getElementById("mn7").addEventListener("click", myFunction7);
+
+        function myFunction7() {
+            document.getElementById("abc").innerHTML = "{{ pageLang["translatedData"]["short-info-goa"] }}"
+        }
+
+        document.getElementById("mn8").addEventListener("click", myFunction8);
+
+        function myFunction8() {
+            document.getElementById("abc").innerHTML = "{{ pageLang["translatedData"]["short-info-varanasi"] }}"
+        }
+    </script>
+    <script src="{{ url_for('static', filename='scripts/index.js') }}"></script>
+</body>
+</html>
