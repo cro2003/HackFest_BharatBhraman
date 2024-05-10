@@ -4,14 +4,14 @@ import os
 from dotenv import load_dotenv
 from datetime import timedelta
 import time
-import requests
 import flight
+import location
 
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 app.permanent_session_lifetime = timedelta(minutes=5)
-LOCATION_API_KEY = os.environ.get('LOCATION')
+
 
 
 
@@ -28,8 +28,8 @@ def planTrip():
     source = request.form['from']
     destination = request.form['to']
     date = request.form['date']
-    sourceData = getLocation(source)
-    destData = getLocation(destination)
+    sourceData = location.getLocation(source)
+    destData = location.getLocation(destination)
     if sourceData==[] or destData==[]:
         flash("Invalid Source or Destination", "error")
         return redirect(url_for('index'))
@@ -44,6 +44,10 @@ def planTrip():
 def flightDetails():
     sessionId = request.args['sessionId']
     flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'], session[sessionId]['destData']['city'], f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}")
+    if flightData==[]:
+        nearestAirport = location.nearestLocation(session[sessionId]['destData'])
+        flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'], nearestAirport, f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}")
+    session[sessionId]['flightData'] = flightData
     data = {"sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData'], "deptDate": f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}",
             "flightData": flightData}
     return render_template('chooseFlight.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
@@ -56,13 +60,9 @@ def trainDetails():
 def generateId(source, destination):
     return f"{str(round(time.time()*1000))}{source[:2]}{destination[:2]}"
 
-def getLocation(query):
-    response = requests.get(
-        f"https://api.geoapify.com/v1/geocode/search?text={query}&format=json&apiKey={LOCATION_API_KEY}", ).json()[
-        'results']
-    if response == []:
-        return []
-    return response[0]
+
+
+
 
 
 
