@@ -33,12 +33,17 @@ def planTrip():
         return redirect(url_for('index'))
     sessionId = generateId(source, destination)
     session[sessionId] = {"sourceData": sourceData, "destData": destData, "deptDate": date}
+    if sourceData['country'] == "India":
+        return redirect(url_for('trainDetails', sessionId=sessionId))
     return redirect(url_for('flightDetails', sessionId=sessionId))
 
 @app.route('/flight-details', methods=['GET','POST'])
 def flightDetails():
     return f"{request.args['sessionId']}"
 
+@app.route('/train-details', methods=['GET','POST'])
+def trainDetails():
+    return f"{request.args['sessionId']}"
 def generateId(source, destination):
     return f"{str(round(time.time()*1000))}{source[:2]}{destination[:2]}"
 
