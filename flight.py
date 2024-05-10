@@ -61,5 +61,3 @@ def getFlightDetails(source, destination, date):
         }
         data.append(compiledData)
     return data
-
-print(getFlightDetails("Dubai", "Delhi", "29/04/2024"))
