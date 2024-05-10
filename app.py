@@ -43,8 +43,12 @@ def planTrip():
 @app.route('/flight-details', methods=['GET','POST'])
 def flightDetails():
     sessionId = request.args['sessionId']
-    data = flight.getFlightDetails(session[sessionId]['sourceData']['city'], session[sessionId]['destData']['city'], f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}")
-    return data
+    flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'], session[sessionId]['destData']['city'], f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}")
+    data = {"sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData'], "deptDate": f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}",
+            "flightData": flightData}
+    return render_template('chooseFlight.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
+                           pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
+                                     "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseFlight"]})
 
 @app.route('/train-details', methods=['GET','POST'])
 def trainDetails():
