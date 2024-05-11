@@ -66,7 +66,7 @@ def trainDetails():
     if session[sessionId].get('flightStatus')!=None:
         session[sessionId]['flightData'] = json.loads(request.form['flightData'].replace("'", '"'))
         if session[sessionId]['flightStatus'] == 'full':
-            return "ALL CLEAR"
+            return redirect(url_for('hotelDetails', sessionId=sessionId))
         else:
             src = session[sessionId]['flightData']["destination"]
             date = session[sessionId]['flightData']["arrivalDate"]
@@ -82,6 +82,24 @@ def trainDetails():
     return render_template('chooseTrain.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseTrain"]})
+
+@app.route('/hotel-details', methods=['GET','POST'])
+def hotelDetails():
+    sessionId = request.args['sessionId']
+    date = session[sessionId]['flightData']["arrivalDate"]
+    date = [date.split('-')[0], date.split('-')[1], date.split('-')[2]]
+    checkInDate = f"{date[2]}-{date[1]}-{date[0]}"
+    checkOutDate = f"{date[2]}-{date[1]}-{str(int(date[0])+1)}"
+    hotelData = hotel.getHotelDetails(session[sessionId]['destData']['city'], checkInDate, checkOutDate)
+    if hotelData==[]:
+        flash("No Hotel Available", "error")
+        session.pop(sessionId)
+        return redirect(url_for('index'))
+    data = {"hotelData": hotelData, "flightData": []}
+    return render_template('chooseHotel.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
+                           pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
+                                     "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseHotel"]})
+
 
 def generateId(source, destination):
     return f"{str(round(time.time()*1000))}{source[:2]}{destination[:2]}"
