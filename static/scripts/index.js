@@ -1,3 +1,28 @@
+function abcd()
+{
+
+
+    document.getElementById("neumorphic-box").style.opacity =0;
+    document.getElementById("neumorphic-box").style.zIndex =-2;
+
+    document.getElementById("neumorphic-box1").style.opacity =1;
+    document.getElementById("neumorphic-box1").style.zIndex =999;
+
+
+}
+
+function pqr()
+{
+
+    document.getElementById("neumorphic-box1").style.opacity =0;
+    document.getElementById("neumorphic-box1").style.zIndex =-2;
+
+    document.getElementById("neumorphic-box").style.opacity =1;
+    document.getElementById("neumorphic-box").style.zIndex =999;
+
+
+
+}
 function init(){
     gsap.registerPlugin(ScrollTrigger);
 

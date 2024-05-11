@@ -1,9 +1,10 @@
-:root{
-    --whit:#FFFFFF;
-    --blac:black;
 
-  }
-
+  :root {
+    --switches-bg-color:#6A87C9;
+    --switches-label-color: white ;
+    --switch-bg-color: white;
+    --switch-text-color: #6A87C9;
+}
   *{
   margin: 0%;
   padding: 0%;
@@ -270,10 +271,10 @@ justify-content:center;
 
 .neumorphic-box {
     position:absolute;
-width:64%;
+width:92%;
 height:10vh;
-    top:7%;
-    left:18%;
+    top:18%;
+    left:4%;
     overflow:hidden;
     display:flex;
     border-radius:10px;
@@ -308,7 +309,7 @@ height:10vh;
 
   .section1
   {
-    width:38%;
+    width:32%;
   height:20vh;
   display:flex;
   align-items:center;
@@ -346,7 +347,7 @@ display:flex;
 {
   background-color:transparent;
   /* padding:12px 40px; */
-  width:98%;
+  width:116%;
   height:50%;
   border-radius:10px;
   border:none;
@@ -359,6 +360,7 @@ font-size:20px;
 }
 #section3
 {
+    width:16%;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -372,7 +374,7 @@ font-size:20px;
   right:2%;
   top:49.5%;
   z-index:-9;
-  scale:1;
+  scale:.9;
   /* border-radius:50%; */
 /* height:400px; */
 
@@ -380,7 +382,7 @@ font-size:20px;
 #page1image{
   /* left:-2%; */
   position:absolute;
-  top:2%;
+  top:14%;
   z-index:-200;
   margin-left:3%;
 
@@ -393,7 +395,7 @@ font-size:20px;
 #page2
 {
     width:100%;
-    height:100vh;
+    height:120vh;
     background-color:white;
     position: relative;
     /* font-family:gilroy; */
@@ -795,5 +797,143 @@ margin-top:-10%;
     .footer .row a i{
     margin:0% 3%;
     }
-    }
+}
+@media screen and (min-width: 1024px) {
 
+    html,
+    body {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+
+    html,
+    body {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+
+    html,
+    body {
+        font-size: 12px;
+    }
+}
+
+/* a container - decorative, not required */
+.container {
+    width: 20rem;
+    padding: 1rem;
+    margin-left:60%;
+    margin-right: auto;
+    margin-top: -65%;
+
+z-index:999;
+}
+/* p - decorative, not required */
+
+
+/* container for all of the switch elements 
+    - adjust "width" to fit the content accordingly 
+*/
+.switches-container {
+    width: 14rem;
+    position: relative;
+    display: flex;
+    padding: 0;
+    position: relative;
+    font-size:20px;
+
+
+    background: var(--switches-bg-color);
+    line-height: 2.5rem;
+    border-radius:10px;
+    margin-left: 30%;
+    margin-right: auto;
+}
+
+/* input (radio) for toggling. hidden - use labels for clicking on */
+.switches-container input {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    font-size:20px;
+
+}
+#neumorphic-box1
+{
+    opacity:0;
+    width:80%;
+    left:10%;
+    /* z-index:-2; */
+}
+/* labels for the input (radio) boxes - something to click on */
+.switches-container label {
+    width: 50%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    cursor: pointer;
+    font-size:20px;
+    color: var(--switches-label-color);
+}
+
+/* switch highlighters wrapper (sliding left / right) 
+    - need wrapper to enable the even margins around the highlight box
+*/
+.switch-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    padding: 0.15rem;
+    z-index: 3;
+    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+    /* transition: transform 1s; */
+}
+
+/* switch box highlighter */
+.switch {
+    border-radius:10px;
+    background: var(--switch-bg-color);
+    height: 100%;
+}
+
+/* switch box labels
+    - default setup
+    - toggle afterwards based on radio:checked status 
+*/
+.switch div {
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    display: block;
+    color: var(--switch-text-color) ;
+    transition: opacity .2s cubic-bezier(.77, 0, .175, 1) .125s;
+    will-change: opacity;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* slide the switch box from right to left */
+.switches-container input:nth-of-type(1):checked~.switch-wrapper {
+    transform: translateX(0%);
+}
+
+/* slide the switch box from left to right */
+.switches-container input:nth-of-type(2):checked~.switch-wrapper {
+    transform: translateX(100%);
+}
+
+/* toggle the switch box labels - first checkbox:checked - show first switch div */
+.switches-container input:nth-of-type(1):checked~.switch-wrapper .switch div:nth-of-type(1) {
+    opacity: 1;
+}
+
+/* toggle the switch box labels - second checkbox:checked - show second switch div */
+.switches-container input:nth-of-type(2):checked~.switch-wrapper .switch div:nth-of-type(2) {
+    opacity: 1;
+}

@@ -26,7 +26,7 @@
         <a id="flight" class="buy" data-tilt data-tilt-scale="1.08" href="/flight"><i class="ri-flight-takeoff-line"></i>{{ pageLang["translatedData"]["flight"] }}</a>
         <a id="train" href="/train" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-train-fill"></i>{{ pageLang["translatedData"]["train"] }}</a>
         <a id="hotel" class="buy" data-tilt data-tilt-scale="1.08"href="/hotels"><i class="ri-hotel-fill"></i>{{ pageLang["translatedData"]["hotel"] }}</a>
-      <a id="multi-destination" href="/round_trip" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-checkbox-multiple-fill"></i>{{ pageLang["translatedData"]["multi-destination"] }}</a>
+      <a id="multi-destination" href="/chat" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-chat-1-fill"></i>{{ pageLang["translatedData"]["multi-destination"] }}</a>
     </div>
       <div id="logo-part2">
           <div class="form-group">
@@ -54,7 +54,7 @@
 
         <div id="page1">
 
-              <img id="page1image"src="{{ url_for('static', filename='images/index_flightIcon.jpg') }}" alt="" srcset="">
+               <img id="page1image"src="{{ url_for('static', filename='images/index_flightIcon.jpg') }}" alt="" srcset="">
               <div id="center">
               <div id="right">
                 <h1 id="right_h1">{{ pageLang["translatedData"]["right_h1"] }}</h1>
@@ -62,8 +62,24 @@
                 <div id="gooey">
 
                 </div>
-                <form action="/plan-trip" method="post">
-                <div class="neumorphic-box">
+                <div class="container">
+                    <div class="switches-container">
+                      <input type="radio" id="switchMonthly" name="switchPlan" value="Customise own" checked="checked" />
+                      <input type="radio" id="switchYearly" name="switchPlan" value="Quick picks" />
+                      <label for="switchMonthly" onclick="pqr()">Quick picks</label>
+                      <label for="switchYearly" onclick="abcd()">Customise own</label>
+                      <div class="switch-wrapper">
+                        <div class="switch">
+                          <div>Quick picks</div>
+                          <div>Customise own</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <form action="/quick-pick" method="post">
+
+
+                <div class="neumorphic-box" id="neumorphic-box">
                     <div class="section1" >
                       <input type="text" list="from-cities"
                       id="from" name="from" placeholder="{{ pageLang["translatedData"]["from"] }}" />
@@ -83,25 +99,67 @@
                 {% endfor %}
                </datalist>
                     </div>
+                    <div class="section1" >
+                        <input type="text" list="choose-options"
+                        id="select" name="select" placeholder="{{ pageLang["translatedData"]["prfrnce"] }}" />
+              <datalist id="choose-options">
+                  {% for cities in pageLang["translatedData"]["prfrnceList"] %}
+                      <option value="{{ cities }}">{{ cities }}</option>
+                  {% endfor %}
+                 </datalist>
+                      </div>
+<!--                      <div class="section">-->
+<!--                        <input type="number" id="budget" name="budget" placeholder="budget">-->
+<!--                      </div>-->
                     <div class="section">
                       <input type="date" id="date" name="date">
                     </div>
+
                     <div class="section" id="section3">
                       <button id="submit" name="submit">{{ pageLang["translatedData"]["submit"] }}</button>
                     <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang["language"] }}">
                         <input hidden name="reqType" id="reqType" value="choosePlan">
                     </div>
                   </form>
+                </div>
 
 
+                <form action="/plan-trip" method="post">
+                <div class="neumorphic-box" id="neumorphic-box1">
+                    <div class="section1" >
+                      <input type="text" list="from-cities"
+                      id="from" name="from" placeholder="{{ pageLang["translatedData"]["from"] }}" />
+            <datalist id="from-cities">
+                {% for cities in pageLang["translatedData"]["from-cities"] %}
+                    <option value="{{ cities }}">{{ cities }}</option>
+                {% endfor %}
+               </datalist>
+                    </div>
+
+                    <div class="section1" >
+                      <input type="text" list="to-cities"
+                      id="to" name="to" placeholder="{{ pageLang["translatedData"]["to"] }}" >
+            <datalist id="to-cities">
+                {% for cities in pageLang["translatedData"]["to-cities"] %}
+                    <option value="{{ cities }}">{{ cities }}</option>
+                {% endfor %}
+               </datalist>
+                    </div>
 
 
+                    <div class="section">
+                      <input type="date" id="date" name="date">
+                    </div>
 
-                  </div>
-
+                    <div class="section" id="section3">
+                      <button id="submit" name="submit">{{ pageLang["translatedData"]["submit"] }}</button>
+                    <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang["language"] }}">
+                        <input hidden name="reqType" id="reqType" value="choosePlan">
+                    </div>
+                  </form>
+                </div>
             </div>
-
-                <div id="left">
+        <div id="left">
              <img id="leftimage" src="https://i.pinimg.com/564x/d4/ec/0c/d4ec0c90971b03bbf0a750139d5cacc2.jpg" alt="">
                 </div>
 
@@ -218,7 +276,6 @@
             </div>
         </div>
         <div id="page3" class="abc">
-          <!-- <h1>Here are some of the most beautiful places you can visit in Bhopal</h1> -->
           <div id="page3center">
           <div id="page3left">
            <h1 id="bhopal">{{ pageLang["translatedData"]["bhopal"] }}</h1>
@@ -234,7 +291,6 @@
 
           </div>
           <div id="page3">
-            <!-- <h1>Here are some of the most beautiful places you can visit in Bhopal</h1> -->
             <div id="page3center">
 
             <div id="page3right">
@@ -242,7 +298,6 @@
 
              </div>
              <div class="page3box" id="box2second"></div>
-             <!-- <div class="page3box" id="box1third"></div> -->
             </div>
             <div id="page3left" class="page3left1">
               <h1 id="delhi">{{ pageLang["translatedData"]["delhi"] }}</h1>
