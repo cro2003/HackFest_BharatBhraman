@@ -7,6 +7,7 @@ import time
 import flight
 import location
 import train
+import hotel
 import json
 
 load_dotenv()
@@ -81,6 +82,7 @@ def trainDetails():
     return render_template('chooseTrain.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseTrain"]})
+
 def generateId(source, destination):
     return f"{str(round(time.time()*1000))}{source[:2]}{destination[:2]}"
 
