@@ -1,4 +1,5 @@
 import requests
+import utils
 
 def getStation(query):
     response = requests.get('https://api.railyatri.in//api/common_city_station_search.json', params={'q': query}).json()
@@ -6,7 +7,7 @@ def getStation(query):
         return []
     return response['items'][0]
 
-def getTrainDetails(source, destination, date):
+def getTrainDetails(source, destination, date, currency):
     srcStnInfo = getStation(source)
     destStnInfo = getStation(destination)
     if srcStnInfo == [] or destStnInfo == []:
@@ -58,15 +59,16 @@ def getTrainDetails(source, destination, date):
             "destination": trainInfo['to_station_name'],
             "arrival": trainInfo['to_sta'],
             #"fare": f'{price:,}',
-            "duration": trainInfo['duration']
+            "duration": trainInfo['duration'].split(':')[0].zfill(2) + ':' + trainInfo['duration'].split(':')[1].zfill(2),
         }
         data.append(main)
-    fareData = fareCheckerTrain(fareFetchList)
+    fareData = fareCheckerTrain(fareFetchList, currency)
     for index, fare in enumerate(fareData):
         data[index]["fare"] = fare
     return data
 
-def fareCheckerTrain(data):
+def fareCheckerTrain(data, currency):
+    exchngRates = utils.currencyRate(currency)
     fare = requests.post('https://trainticketapi.railyatri.in/api/seat-availability-from-db',
                          json={'device_type_id': '2', 'train_details': data,
                              'quota': 'GN',
@@ -88,5 +90,6 @@ def fareCheckerTrain(data):
             price = prevPrice
             print(trains)
         prevPrice = price
+        price = round(float(price) / exchngRates["rates"]["INR"])
         fareData.append(price)
     return fareData

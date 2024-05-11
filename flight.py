@@ -22,7 +22,7 @@ def getAirport(query, dest=False):
         return []
     return response['locations'][0]['code']
 
-def getFlightDetails(source, destination, date):
+def getFlightDetails(source, destination, date, currency):
     srcCode = getAirport(source)
     destCode = getAirport(destination, dest=True)
     if srcCode == [] or destCode == []:
@@ -33,7 +33,7 @@ def getFlightDetails(source, destination, date):
         'date_from': date,
         'date_to': date,
         'partner_market': 'in',
-        'curr': 'INR',
+        'curr': currency,
         'locale': 'en',
     }
     response = requests.get('https://api.tequila.kiwi.com/v2/search', params=params, headers=header).json()
