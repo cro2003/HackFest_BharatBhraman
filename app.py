@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask, request, render_template, redirect, url_for, flash
 import database as db
 import os
@@ -237,7 +239,7 @@ def quickPicks():
         flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'],
                                              session[sessionId]['destData']['city'],
                                              f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}",
-                                             session[sessionId]['currency'], 'comfort')
+                                             session[sessionId]['currency'])
         session[sessionId]['flightStatus'] = 'full'
         if flightData == []:
             nearestAirport = location.nearestLocation(session[sessionId]['destData'])
@@ -245,10 +247,18 @@ def quickPicks():
                                                  f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}",
                                                  session[sessionId]['currency'], 'comfort')
             session[sessionId]['flightStatus'] = 'partial'
+            if flightData==[]:
+                flash("No Flights Available", "error")
+                session.pop(sessionId)
+                return redirect(url_for('index'))
             session[sessionId]['flightData'] = flightData[0]
             src = session[sessionId]['flightData']["destination"]
             date = session[sessionId]['flightData']["arrivalDate"]
             trainData = train.getTrainDetails(src, session[sessionId]['destData']['city'], date, currency, 'comfort')
+            if trainData==[]:
+                flash("No Trains Available", "error")
+                session.pop(sessionId)
+                return redirect(url_for('index'))
             session[sessionId]['trainData'] = trainData[0]
         session[sessionId]['flightData'] = flightData[0]
         if session[sessionId].get('flightStatus') != None and session[sessionId].get('flightStatus') == 'full':
@@ -264,6 +274,10 @@ def quickPicks():
             dest = session[sessionId]['destData']['city']
             date = f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}"
             trainData = train.getTrainDetails(src, dest, date, currency, 'budget')
+            if trainData==[]:
+                flash("No Trains Available", "error")
+                session.pop(sessionId)
+                return redirect(url_for('index'))
             session[sessionId]['trainData'] = trainData[0]
         else:
             flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'],
@@ -271,18 +285,26 @@ def quickPicks():
                                                  f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}",
                                                  session[sessionId]['currency'])
             session[sessionId]['flightStatus'] = 'full'
-            session[sessionId]['flightData'] = flightData[0]
             if flightData == []:
                 nearestAirport = location.nearestLocation(session[sessionId]['destData'])
                 flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'], nearestAirport,
                                                      f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}",
                                                      session[sessionId]['currency'])
                 session[sessionId]['flightStatus'] = 'partial'
+                if flightData == []:
+                    flash("No Flights Available", "error")
+                    session.pop(sessionId)
+                    return redirect(url_for('index'))
                 session[sessionId]['flightData'] = flightData[0]
                 src = session[sessionId]['flightData']["destination"]
                 date = session[sessionId]['flightData']["arrivalDate"]
                 trainData = train.getTrainDetails(src, session[sessionId]['destData']['city'], date, currency, 'budget')
+                if trainData == []:
+                    flash("No Trains Available", "error")
+                    session.pop(sessionId)
+                    return redirect(url_for('index'))
                 session[sessionId]['trainData'] = trainData[0]
+            session[sessionId]['flightData'] = flightData[0]
         if session[sessionId].get('flightStatus') != None and session[sessionId].get('flightStatus') == 'full':
             date = session[sessionId]['flightData']["arrivalDate"]
         date = [date.split('-')[0], date.split('-')[1], date.split('-')[2]]
@@ -291,6 +313,8 @@ def quickPicks():
         hotelData = hotel.getHotelDetails(session[sessionId]['destData']['city'], checkInDate, checkOutDate, currency)
         session[sessionId]['hotelData'] = hotelData[0]
     data = db.getContentData(session[sessionId]['destData']["city"])
+    if data==None:
+        time.sleep(10)
     data = {"sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData'],
             "deptDate": f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}",
             "hotelData": session[sessionId]['hotelData'], "guideDetails": db.guideDetails["en"], "content": data,
@@ -312,8 +336,6 @@ def quickPicks():
                                      "translatedData":
                                          db.languageData["translatedData"][session[sessionId]['prefferedLang']][
                                              "chooseGuide"]})
-
-
 
 
 @app.route('/guide', methods=['GET'])
