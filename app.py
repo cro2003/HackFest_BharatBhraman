@@ -1,5 +1,5 @@
 import time
-
+import genai
 from flask import Flask, request, render_template, redirect, url_for, flash
 import database as db
 import os
@@ -67,7 +67,7 @@ def flightDetails():
                 if key in AcceptedKey:
                     if cache_data.get(traine[key]) is None:
                         oldData = traine[key]
-                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language="hi")
+                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
                         cache_data[oldData] = traine[key]
                     else:
                         traine[key] = cache_data[traine[key]]
@@ -99,11 +99,11 @@ def trainDetails():
         AcceptedKey = ['trainName', 'source', 'destination']
         cache_data = {}
         if cache_data.get(data['src']) is None:
-            data['src'] = ts.translate_text(data['src'], from_language="en", to_language="hi")
+            data['src'] = ts.translate_text(data['src'], from_language="en", to_language=session[sessionId].get('prefferedLang'))
         else:
             data['src'] = cache_data[data['src']]
         if cache_data.get(data['dest']) is None:
-            data['dest'] = ts.translate_text(data['dest'], from_language="en", to_language="hi")
+            data['dest'] = ts.translate_text(data['dest'], from_language="en", to_language=session[sessionId].get('prefferedLang'))
         else:
             data['dest'] = cache_data[data['dest']]
         for traine in data['trainData']:
@@ -111,7 +111,7 @@ def trainDetails():
                 if key in AcceptedKey:
                     if cache_data.get(traine[key]) is None:
                         oldData = traine[key]
-                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language="hi")
+                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
                         cache_data[oldData] = traine[key]
                     else:
                         traine[key] = cache_data[traine[key]]
@@ -145,7 +145,7 @@ def hotelDetails():
                 if key in AcceptedKey:
                     if cache_data.get(traine[key]) is None:
                         oldData = traine[key]
-                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language="hi")
+                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
                         cache_data[oldData] = traine[key]
                     else:
                         traine[key] = cache_data[traine[key]]
@@ -182,7 +182,7 @@ def tripDetail():
                 if key in AcceptedKey:
                     if cache_data.get(traine[key]) is None:
                         oldData = traine[key]
-                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language="hi")
+                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
                         cache_data[oldData] = traine[key]
                     else:
                         traine[key] = cache_data[traine[key]]
@@ -190,7 +190,7 @@ def tripDetail():
             if key in AcceptedKey:
                 if cache_data.get(data["hotelData"][key]) is None:
                     oldData = data["hotelData"][key]
-                    data["hotelData"][key] = ts.translate_text(data["hotelData"][key], from_language="en", to_language="hi")
+                    data["hotelData"][key] = ts.translate_text(data["hotelData"][key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
                     cache_data[oldData] = data["hotelData"][key]
                 else:
                     data["hotelData"][key] = cache_data[data["hotelData"][key]]
@@ -199,7 +199,7 @@ def tripDetail():
                 if key in AcceptedKey:
                     if cache_data.get(data["flightData"][key]) is None:
                         oldData = data["flightData"][key]
-                        data["flightData"][key] = ts.translate_text(data["flightData"][key], from_language="en", to_language="hi")
+                        data["flightData"][key] = ts.translate_text(data["flightData"][key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
                         cache_data[oldData] = data["flightData"][key]
                     else:
                         data["flightData"][key] = cache_data[data["flightData"][key]]
@@ -208,7 +208,7 @@ def tripDetail():
                 if key in AcceptedKey:
                     if cache_data.get(data["trainData"][key]) is None:
                         oldData = data["trainData"][key]
-                        data["trainData"][key] = ts.translate_text(data["trainData"][key], from_language="en", to_language="hi")
+                        data["trainData"][key] = ts.translate_text(data["trainData"][key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
                         cache_data[oldData] = data["trainData"][key]
                     else:
                         data["trainData"][key] = cache_data[data["trainData"][key]]
@@ -330,6 +330,44 @@ def quickPicks():
     searchFormat = (data["hotelData"]["name"] + " " + data["destinationData"]["city"]).replace(' ', '%20')
     data["hotelData"]["mapsDeeplink"] = "https://www.google.com/maps/search/?api=1&query=" + searchFormat
     data["sessionId"] = sessionId
+    if session[sessionId].get('prefferedLang') != 'en':
+        AcceptedKey = ['placeName', 'description', 'address', 'name', 'location', 'trainName', 'source', 'flightName', 'src', 'destination']
+        cache_data = {}
+        for traine in data['content']:
+            for key in traine.keys():
+                if key in AcceptedKey:
+                    if cache_data.get(traine[key]) is None:
+                        oldData = traine[key]
+                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
+                        cache_data[oldData] = traine[key]
+                    else:
+                        traine[key] = cache_data[traine[key]]
+        for key in data["hotelData"].keys():
+            if key in AcceptedKey:
+                if cache_data.get(data["hotelData"][key]) is None:
+                    oldData = data["hotelData"][key]
+                    data["hotelData"][key] = ts.translate_text(data["hotelData"][key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
+                    cache_data[oldData] = data["hotelData"][key]
+                else:
+                    data["hotelData"][key] = cache_data[data["hotelData"][key]]
+        if session[sessionId].get('flightData') != None:
+            for key in data["flightData"].keys():
+                if key in AcceptedKey:
+                    if cache_data.get(data["flightData"][key]) is None:
+                        oldData = data["flightData"][key]
+                        data["flightData"][key] = ts.translate_text(data["flightData"][key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
+                        cache_data[oldData] = data["flightData"][key]
+                    else:
+                        data["flightData"][key] = cache_data[data["flightData"][key]]
+        if session[sessionId].get('trainData') != None:
+            for key in data["trainData"].keys():
+                if key in AcceptedKey:
+                    if cache_data.get(data["trainData"][key]) is None:
+                        oldData = data["trainData"][key]
+                        data["trainData"][key] = ts.translate_text(data["trainData"][key], from_language="en", to_language=session[sessionId].get('prefferedLang'))
+                        cache_data[oldData] = data["trainData"][key]
+                    else:
+                        data["trainData"][key] = cache_data[data["trainData"][key]]
     return render_template('chooseGuide.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'],
                                      "codeToLang": db.languageData["codeToLang"],
@@ -372,7 +410,6 @@ def getGuide():
     db.postGuideData(placeName, data)
     flash("Guide Added Successfully", "success")
     return redirect(url_for('addGuidePage'))
-
 
 
 
