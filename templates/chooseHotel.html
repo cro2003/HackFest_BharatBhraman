@@ -58,7 +58,7 @@
           {% for hotelInfo in data["hotelData"] %}
                 <form action="/trip-detail?sessionId={{ data['sessionId'] }}" method="post">  <div class="box1" > <div class="box1l"><img src="{{ hotelInfo['image'] }}" alt="" srcset=""></div> <div class="box1c" ><div class="boxc11"> <h3>{{ hotelInfo["name"] }}</h3><h5>{{ hotelInfo["location"] }}</h5> <h6>{{ pageLang["translatedData"]["usrRting"] }}: {{ hotelInfo["rating"] }}</h6> <h4>{{ pageLang["translatedData"]["rting"] }}: {{ hotelInfo["star"] }} {{ pageLang["translatedData"]["stars"] }}</h4></div>
                 <div id="boxc12"></div> <div id="boxc13"></div></div> <div class="box1r">
-                        <h3>{{ hotelInfo["price"] }} INR</h3>
+                        <h3>{{ hotelInfo["price"] }} {{ data["currency"] }}</h3>
                             <input type="submit" value="{{ pageLang["translatedData"]["slctHotel"] }}" id="box1submit"></div></div>
                           <input type="hidden" id="hotelData" name="hotelData" value= "{{ hotelInfo }}">
                         <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang["language"] }}">
