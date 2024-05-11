@@ -19,58 +19,156 @@ headers = {
     'sec-ch-ua-platform': '"macOS"',
 }
 
+# def getStation(query):
+#     response = requests.get(
+#         f'https://travel.paytm.com/api/trains/v3/station/{query}?client=web',
+#     ).json()
+#     return response['body'][0]['stations'] if response.get('body')!=None else []
+#
+# def getTrainDetails(source, destination, date, currency):
+#     srcStnInfo = getStation(source)[0]['data']['code']
+#     destStnInfo = getStation(destination)[0]['data']['code']
+#     if srcStnInfo == [] or destStnInfo == []:
+#         return {"error": "station not found"}
+#     params = {
+#         'fromStnCode': srcStnInfo,
+#         'destStnCode': destStnInfo,
+#         'doj': date,
+#         'token': '',
+#         'quota': 'GN',
+#         'appVersion': '290',
+#         'androidid': 'mwebd_android',
+#     }
+#     response = requests.get('https://securedapi.confirmtkt.com/api/platform/trainbooking/tatwnstns', params=params,
+#                             headers=headers).json()
+#     if response.get('trainBtwnStnsList')==None:
+#         return []
+#     data = []
+#     prevPrice = 1911
+#     exchngRates = utils.currencyRate(currency)
+#     for trainInfo in response['trainBtwnStnsList']:
+#         if trainInfo['avaiblitycache'].get('3A')!=None:
+#             price = trainInfo['avaiblitycache']['3A']['Fare']
+#         elif trainInfo['avaiblitycache'].get('3E')!=None:
+#             price = trainInfo['avaiblitycache']['3E']['Fare']
+#         elif trainInfo['avaiblitycache'].get('CC') != None:
+#             price = trainInfo['avaiblitycache']['CC']['Fare']
+#         else:
+#             price = trainInfo['avaiblitycache'][trainInfo['avlClasses']['Array'][0]]['Fare']
+#         if price==None:
+#             price = prevPrice
+#         prevPrice = price
+#         price = round(float(price) / exchngRates["rates"]["INR"])
+#         main = {
+#             "trainNo": trainInfo['trainNumber'],
+#             "trainName": trainInfo['trainName'],
+#             "source": stnCode[trainInfo['fromStnCode']],
+#             "departure": trainInfo['departureTime'],
+#             "destination": stnCode[trainInfo['toStnCode']],
+#             "arrival": trainInfo['arrivalTime'],
+#             "fare": f'{int(price):,}',
+#             "duration": trainInfo['duration']
+#         }
+#         data.append(main)
+#     return data
+
+
+import requests
+import utils
+
 def getStation(query):
-    response = requests.get(
-        f'https://travel.paytm.com/api/trains/v3/station/{query}?client=web',
-    ).json()
-    return response['body'][0]['stations'] if response.get('body')!=None else []
+    response = requests.get('https://api.railyatri.in//api/common_city_station_search.json', params={'q': query}).json()
+    if response['items'] == []:
+        return []
+    return response['items'][0]
 
 def getTrainDetails(source, destination, date, currency):
-    srcStnInfo = getStation(source)[0]['data']['code']
-    destStnInfo = getStation(destination)[0]['data']['code']
+    srcStnInfo = getStation(source)
+    destStnInfo = getStation(destination)
     if srcStnInfo == [] or destStnInfo == []:
         return {"error": "station not found"}
     params = {
-        'fromStnCode': srcStnInfo,
-        'destStnCode': destStnInfo,
-        'doj': date,
-        'token': '',
-        'quota': 'GN',
-        'appVersion': '290',
-        'androidid': 'mwebd_android',
+        'from': srcStnInfo['station_code'],
+        'to': destStnInfo['station_code'],
+        'dateOfJourney': date,
+        'action': 'train_between_station',
+        'controller': 'train_ticket_tbs',
+        'device_type_id': '2',
+        'from_code': srcStnInfo['station_code'],
+        'from_name': srcStnInfo['station_name'],
+        'journey_date': date,
+        'journey_quota': 'GN',
+        'to_code': destStnInfo['station_code'],
+        'to_name': destStnInfo['station_name'],
+        'v_code': '167',
     }
-    response = requests.get('https://securedapi.confirmtkt.com/api/platform/trainbooking/tatwnstns', params=params,
-                            headers=headers).json()
-    if response.get('trainBtwnStnsList')==None:
-        return []
     data = []
-    prevPrice = 1911
-    exchngRates = utils.currencyRate(currency)
-    for trainInfo in response['trainBtwnStnsList']:
-        if trainInfo['avaiblitycache'].get('3A')!=None:
-            price = trainInfo['avaiblitycache']['3A']['Fare']
-        elif trainInfo['avaiblitycache'].get('3E')!=None:
-            price = trainInfo['avaiblitycache']['3E']['Fare']
-        elif trainInfo['avaiblitycache'].get('CC') != None:
-            price = trainInfo['avaiblitycache']['CC']['Fare']
-        else:
-            price = trainInfo['avaiblitycache'][trainInfo['avlClasses']['Array'][0]]['Fare']
-        if price==None:
-            price = prevPrice
-        prevPrice = price
-        price = round(float(price) / exchngRates["rates"]["INR"])
+    fareFetchList = []
+    response = requests.get('https://api.railyatri.in/api/trains-between-station-from-wrapper.json',
+                            params=params).json()
+    if response.get('error')!=None or response["train_between_stations"]==[]:
+        return []
+    for index, trainInfo in enumerate(response["train_between_stations"]):
+        postData = {
+            'train_number': trainInfo['train_number'],
+            'journey_date': f'{date} ',
+            'boarding_from': trainInfo['from'],
+            'boarding_to': trainInfo['to'],
+            'journey_class': [
+                '3A',
+                'CC',
+                '3E',
+                'SL',
+                '2A'
+            ],
+            'quota': 'GN',
+            'urgency': False,
+            'd_day': 0,
+        }
+        fareFetchList.append(postData)
         main = {
-            "trainNo": trainInfo['trainNumber'],
-            "trainName": trainInfo['trainName'],
-            "source": stnCode[trainInfo['fromStnCode']],
-            "departure": trainInfo['departureTime'],
-            "destination": stnCode[trainInfo['toStnCode']],
-            "arrival": trainInfo['arrivalTime'],
-            "fare": f'{int(price):,}',
-            "duration": trainInfo['duration']
+            "trainNo": trainInfo['train_number'],
+            "trainName": trainInfo['train_name'],
+            "source": trainInfo['from_station_name'],
+            "departure": trainInfo['from_std'],
+            "destination": trainInfo['to_station_name'],
+            "arrival": trainInfo['to_sta'],
+            #"fare": f'{price:,}',
+            "duration": trainInfo['duration'].split(':')[0].zfill(2) + ':' + trainInfo['duration'].split(':')[1].zfill(2),
         }
         data.append(main)
+    fareData = fareCheckerTrain(fareFetchList, currency)
+    for index, fare in enumerate(fareData):
+        data[index]["fare"] = fare
     return data
 
+def fareCheckerTrain(data, currency):
+    exchngRates = utils.currencyRate(currency)
+    fare = requests.post('https://trainticketapi.railyatri.in/api/seat-availability-from-db',
+                         json={'device_type_id': '2', 'train_details': data,
+                             'quota': 'GN',
+                             'urgency': False,
+                             'd_day': 0,
+                         }).json()
+    fareData = []
+    prevPrice = 1911
+    for trains in fare['train_data']:
+        if trains["class_data"][0]["success"] == True:
+            price = trains["class_data"][0]["seat_availibility"][0]["total_fare"]
+        elif trains["class_data"][1]["success"] == True:
+            price = trains["class_data"][1]["seat_availibility"][0]["total_fare"]
+        elif trains["class_data"][2]["success"] == True:
+            price = trains["class_data"][2]["seat_availibility"][0]["total_fare"]
+        elif trains["class_data"][3]["success"] == True:
+            price = trains["class_data"][3]["seat_availibility"][0]["total_fare"]
+        else:
+            price = prevPrice
+            print(trains)
+        prevPrice = price
+        price = round(float(price) / exchngRates["rates"]["INR"])
+        fareData.append(price)
+    return fareData
+
+#print(getTrainDetails('Bhopal', 'Vidisha', '30-05-2024', 'INR'))
 #print(getTrainDetails('Bhopal', 'Vidisha', '30-05-2024', 'INR'))
 
