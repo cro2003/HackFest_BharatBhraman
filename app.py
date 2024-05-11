@@ -16,7 +16,6 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 app.permanent_session_lifetime = timedelta(minutes=5)
-content = {}
 session = {}
 
 @app.route('/', methods=['GET', 'POST'])
@@ -111,7 +110,7 @@ def hotelDetails():
 def tripDetail():
     sessionId = request.args['sessionId']
     session[sessionId]['hotelData'] = json.loads(request.form['hotelData'].replace("'", '"'))
-    data = content[session[sessionId]['destData']["city"]]
+    data = db.getContentData(session[sessionId]['destData']["city"])
     data = {"sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData'], "deptDate": f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}", "hotelData": session[sessionId]['hotelData'], "guideDetails": db.guideDetails["en"], "content": data, "currency": session[sessionId]['currency']}
     if session[sessionId].get('flightData')!=None:
         data["flightData"] = session[sessionId]['flightData']
@@ -127,9 +126,12 @@ def tripDetail():
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseGuide"]})
 
-def contentGen(city):
+def contentGen(city, forceGen=False):
+    contentDb = db.getContentData(city)
+    if not forceGen and contentDb != None:
+        return
     data = genai.contentCreator(city)
-    content[city] = data
+    db.postContentData(city, data)
     print("Content Generated!")
 
 if __name__ == "__main__":
