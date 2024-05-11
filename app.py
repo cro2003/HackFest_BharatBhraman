@@ -86,6 +86,8 @@ def hotelDetails():
     date = f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}"
     if session[sessionId].get('flightStatus')!=None:
         date = session[sessionId]['flightData']["arrivalDate"]
+    else:
+        session[sessionId]['trainData'] = json.loads(request.form['trainData'].replace("'", '"'))
     date = [date.split('-')[0], date.split('-')[1], date.split('-')[2]]
     checkInDate = f"{date[2]}-{date[1]}-{date[0]}"
     checkOutDate = f"{date[2]}-{date[1]}-{str(int(date[0])+1)}"
@@ -98,7 +100,6 @@ def hotelDetails():
     return render_template('chooseHotel.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseHotel"]})
-
 
 def generateId(source, destination):
     return f"{str(round(time.time()*1000))}{source[:2]}{destination[:2]}"
