@@ -51,31 +51,14 @@
             <div id="page1image"></div>
             <div id="center">
                <div class="neumorphic-box">
-                   {% if data["flightData"]!=None %}
-                      <div class="section1" >
-                         <div class="box">
-                            <h3>{{ data["flightData"]["destination"] }}</h3>
-                         </div>
-                      </div>
-                      <div class="section1" >
-                         <div class="box">
-                            <h3> {{ data["destinationData"]["city"] }} </h3>
-                         </div>
-                      </div>
-                      <div class="section">
-                         <div class="box">
-                            <h3>{{ data["flightData"]["arrivalDate"] }}</h3>
-                         </div>
-                      </div>
-                   {% else %}
                         <div class="section1" >
                          <div class="box">
-                            <h3>{{ data["sourceData"]["city"] }}</h3>
+                            <h3>{{ data["src"] }}</h3>
                          </div>
                       </div>
                       <div class="section1" >
                          <div class="box">
-                            <h3>{{ data["destinationData"]["city"] }}</h3>
+                            <h3>{{ data["dest"] }}</h3>
                          </div>
                       </div>
                       <div class="section">
@@ -83,7 +66,6 @@
                             <h3>{{ data["deptDate"] }}</h3>
                          </div>
                       </div>
-                   {% endif %}
                </div>
             </div>
             <h1 id="updates">{{ pageLang["translatedData"]["updates"] }}</h1>
@@ -91,7 +73,7 @@
             </div> -->
             <div id="boxes">
                 {% for trainInfo in data["trainData"] %}
-                  <form action="/plan-trip" method="post">
+                  <form action="/hotel-details?sessionId={{ data['sessionId'] }}" method="post">
                      <div class="box1">
                         <div class="firstdiv">
                            <h3 id="firstdivh31" >{{ trainInfo["trainName"] }}</h3>
@@ -123,16 +105,12 @@
 
                         </div>
                         <div class="thirddiv">
-                            {% if data["flightData"]!=[] %}
-                                <h3>{{ trainInfo["fare"] }} {{ INR }}</h3>
-                            {% else %}
                                 <h3>{{ trainInfo["fare"] }} INR</h3>
-                            {% endif %}
-                              <input type="submit" value="{{ pageLang["translatedData"]["slctTrain"] }}" id="bookp">
+                              <input type="submit" value='{{ pageLang["translatedData"]["slctTrain"] }}' id="bookp">
                         </div>
 
-                     <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang["language"] }}">
-
+                     <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang['language'] }}">
+                      <input type="hidden" id="trainData" name="trainData" value= "{{ trainInfo }}">
                      </div>
                   </form>
                 {% endfor %}

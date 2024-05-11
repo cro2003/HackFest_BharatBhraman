@@ -56,21 +56,11 @@
 
 
           {% for hotelInfo in data["hotelData"] %}
-                <form action="/plan-trip" method="post">  <div class="box1" > <div class="box1l"><img src="{{ hotelInfo['image'] }}" alt="" srcset=""></div> <div class="box1c" ><div class="boxc11"> <h3>{{ hotelInfo["name"] }}</h3><h5>{{ hotelInfo["location"] }}</h5> <h6>{{ pageLang["translatedData"]["usrRting"] }}: {{ hotelInfo["rating"] }}</h6> <h4>{{ pageLang["translatedData"]["rting"] }}: {{ hotelInfo["star"] }} {{ pageLang["translatedData"]["stars"] }}</h4></div>
+                <form action="/trip-detail?sessionId={{ data['sessionId'] }}" method="post">  <div class="box1" > <div class="box1l"><img src="{{ hotelInfo['image'] }}" alt="" srcset=""></div> <div class="box1c" ><div class="boxc11"> <h3>{{ hotelInfo["name"] }}</h3><h5>{{ hotelInfo["location"] }}</h5> <h6>{{ pageLang["translatedData"]["usrRting"] }}: {{ hotelInfo["rating"] }}</h6> <h4>{{ pageLang["translatedData"]["rting"] }}: {{ hotelInfo["star"] }} {{ pageLang["translatedData"]["stars"] }}</h4></div>
                 <div id="boxc12"></div> <div id="boxc13"></div></div> <div class="box1r">
-                    {% if data["flightData"]!=[] %}
-                        <h3>{{ hotelInfo["price"] }} {{ data["flightData"]["currency"] }}</h3>
-                    {% else %}
                         <h3>{{ hotelInfo["price"] }} INR</h3>
-                    {% endif %}
                             <input type="submit" value="{{ pageLang["translatedData"]["slctHotel"] }}" id="box1submit"></div></div>
-                            <input type="hidden" id="reqType" name="reqType" value="chooseHotel">
-                          <input type="hidden" id="trainData" name="trainData" value= "{{ data['trainData'] }}">
-                          <input type="hidden" id="flightData" name="flightData" value= "{{ data['flightData'] }}">
                           <input type="hidden" id="hotelData" name="hotelData" value= "{{ hotelInfo }}">
-                          <input type="hidden" id="sourceData" name="sourceData" value= "{{ data['sourceData'] }}">
-                          <input type="hidden" id="departureDate" name="departureDate" value= "{{ data['date'] }}">
-                          <input type="hidden" id="destinationData" name="destinationData" value= "{{ data['destinationData'] }}">
                         <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang["language"] }}">
                     </form>
                {% endfor %}
