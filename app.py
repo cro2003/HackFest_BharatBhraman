@@ -52,7 +52,7 @@ def flightDetails():
         nearestAirport = location.nearestLocation(session[sessionId]['destData'])
         flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'], nearestAirport, f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}")
         session[sessionId]['flightStatus'] = 'partial'
-    data = {"sessionId": sessionId, "flightData": flightData, 'deptDate': f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}", "sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData']}
+    data = {"sessionId": sessionId, "flightData": flightData, 'deptDate': f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}"}
     return render_template('chooseFlight.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseFlight"]})
@@ -75,10 +75,7 @@ def trainDetails():
         flash("No Train Available", "error")
         session.pop(sessionId)
         return redirect(url_for('index'))
-    data = {"sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData'],
-            "deptDate": f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}",
-            "flightData": session[sessionId].get('flightData'), "trainData": trainData}
-    data["destinationData"]["city-en"] = data["destinationData"]["city"]
+    data = {"sessionId": sessionId,"src": src, "dest": dest, "deptDate": date, "trainData": trainData}
     return render_template('chooseTrain.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseTrain"]})
@@ -86,7 +83,9 @@ def trainDetails():
 @app.route('/hotel-details', methods=['GET','POST'])
 def hotelDetails():
     sessionId = request.args['sessionId']
-    date = session[sessionId]['flightData']["arrivalDate"]
+    date = f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}"
+    if session[sessionId].get('flightStatus')!=None:
+        date = session[sessionId]['flightData']["arrivalDate"]
     date = [date.split('-')[0], date.split('-')[1], date.split('-')[2]]
     checkInDate = f"{date[2]}-{date[1]}-{date[0]}"
     checkOutDate = f"{date[2]}-{date[1]}-{str(int(date[0])+1)}"

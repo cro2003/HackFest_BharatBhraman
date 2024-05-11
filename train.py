@@ -41,7 +41,9 @@ def getTrainDetails(source, destination, date):
             'journey_class': [
                 '3A',
                 'CC',
-                'SL'
+                '3E',
+                'SL',
+                '2A'
             ],
             'quota': 'GN',
             'urgency': False,
@@ -72,14 +74,19 @@ def fareCheckerTrain(data):
                              'd_day': 0,
                          }).json()
     fareData = []
+    prevPrice = 1911
     for trains in fare['train_data']:
         if trains["class_data"][0]["success"] == True:
             price = trains["class_data"][0]["seat_availibility"][0]["total_fare"]
         elif trains["class_data"][1]["success"] == True:
             price = trains["class_data"][1]["seat_availibility"][0]["total_fare"]
-        elif trains["class_data"][1]["success"] == True:
+        elif trains["class_data"][2]["success"] == True:
             price = trains["class_data"][2]["seat_availibility"][0]["total_fare"]
+        elif trains["class_data"][3]["success"] == True:
+            price = trains["class_data"][3]["seat_availibility"][0]["total_fare"]
         else:
-            price = 1911
+            price = prevPrice
+            print(trains)
+        prevPrice = price
         fareData.append(price)
     return fareData

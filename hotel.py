@@ -22,7 +22,7 @@ def getHotelDetails(location, checkinDate, checkoutDate): #IN YYYY-MM-DD Form
             if not imageResponse.ok: raise TypeError
         except:
             image = 'https://static.vecteezy.com/system/resources/previews/015/694/767/original/skyscraper-hotel-building-flat-cartoon-hand-drawn-illustration-template-with-view-on-city-space-of-street-panorama-design-vector.jpg'"""
-        price = round(float(hotel["ratesSummary"]["minPrice"]))
+        price = round(float(hotel["ratesSummary"]["minPrice"])*83.29)
         try:
             data = {
                 "name": hotel["name"],
