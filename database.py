@@ -26,7 +26,6 @@ def postContentData(city, data):
         collections_manager.update_one({"_id": ObjectId(GUIDE_OBJ_ID)}, {"$set": {place['placeName']: []}})
 def getGuidePlace():
     allData = getAllData(GUIDE_OBJ_ID)
-    print(allData)
     placeList = [placeName for placeName in allData.keys()]
     return placeList
 
@@ -43,6 +42,18 @@ def postGuideData(placeName, data):
 def showGuide(placeName):
     allData = getAllData(GUIDE_OBJ_ID)
     return allData.get(placeName)
+
+def registerUser(username, password):
+    collections_manager.update_one({"_id": ObjectId(USER_OBJ_ID)}, {"$set": {username: password, "orders": []}})
+
+def checkUser(username, password):
+    allData = getAllData(USER_OBJ_ID)
+    if allData.get(username) == password:
+        return True
+    return False
+
+def registerGuide(username, password):
+    collections_manager.update_one({"_id": ObjectId(GUIDE_OBJ_ID)}, {"$set": {username: password, "orders": []}})
 
 
 languageData = getAllData(LANGUAGE_DATA_OBJ_ID).get('languageData')
