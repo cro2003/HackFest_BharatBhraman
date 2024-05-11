@@ -69,6 +69,20 @@ languageData = {
         "updates": "Suggestions regarding Trains",
         "slctTrain": "Select Train"
       },
+"chooseHotel": {
+                "bb-logo": "Bharat\u092d\u094d\u0930\u092e\u0923",
+                "home": "Home",
+                "flight": "Flights",
+                "train": "Trains",
+                "hotel": "Hotels",
+                "multi-destination": "Multi Destinations",
+                "login": "Login",
+                "updates": "Suggestions regarding Hotels",
+                "slctHotel": "Select Hotel",
+                "usrRting": "Users Rating",
+                "rting": "Rating",
+                "stars": "Stars"
+            },
     }
   }
 }
