@@ -1,0 +1,13 @@
+bs4
+requests
+flask
+json_repair
+python-dotenv
+tqdm
+PyExecJS
+pathos
+cryptography
+gunicorn
+google-generativeai
+lxml
+pymongo
