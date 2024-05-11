@@ -6,7 +6,9 @@ load_dotenv()
 LOCATION_API_KEY = os.environ.get('LOCATION')
 
 def getLocation(query):
-    response = requests.get(f"https://api.geoapify.com/v1/geocode/search?text={query}&format=json&apiKey={LOCATION_API_KEY}").json()['results']
+    response = requests.get(f"https://api.geoapify.com/v1/geocode/search?text={query}&format=json&apiKey={LOCATION_API_KEY}").json()
+    print(response)
+    response = response['results']
     if response == []:
         return []
     return response[0]

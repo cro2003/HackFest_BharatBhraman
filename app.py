@@ -214,6 +214,76 @@ def tripDetail():
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseGuide"]})
 
+@app.route('/quick-pick', methods=['POST'])
+def quickPicks():
+    prefferedLang = request.form['selectedLang'].strip()
+    source = request.form['from']
+    destination = request.form['to']
+    prfrnce = request.form['select']
+    date = request.form['date']
+    sourceData = location.getLocation(source)
+    destData = location.getLocation(destination)
+    if sourceData == [] or destData == [] or destData.get('city') == None or sourceData.get('city') == None:
+        flash("Invalid Source or Destination", "error")
+        return redirect(url_for('index'))
+    date = [date.split('-')[2], date.split('-')[1], date.split('-')[0]]  # IN [DD, MM, YYYY]
+    sessionId = utils.generateId(source, destination)
+    thread = threading.Thread(target=utils.contentGen, args=(destData["city"],))
+    thread.start()
+    currency = db.currency.get(sourceData['country_code'].upper())
+    session[sessionId] = {"sourceData": sourceData, "destData": destData, "deptDate": date,
+                          "prefferedLang": prefferedLang, "currency": currency, "sessionId": sessionId}
+    if prfrnce == "Comfort":
+        flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'],
+                                             session[sessionId]['destData']['city'],
+                                             f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}",
+                                             session[sessionId]['currency'], 'comfort')
+        session[sessionId]['flightStatus'] = 'full'
+        if flightData == []:
+            nearestAirport = location.nearestLocation(session[sessionId]['destData'])
+            flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'], nearestAirport,
+                                                 f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}",
+                                                 session[sessionId]['currency'], 'comfort')
+            session[sessionId]['flightStatus'] = 'partial'
+            session[sessionId]['flightData'] = flightData[0]
+            src = session[sessionId]['flightData']["destination"]
+            date = session[sessionId]['flightData']["arrivalDate"]
+            trainData = train.getTrainDetails(src, session[sessionId]['destData']['city'], date, currency, 'comfort')
+            session[sessionId]['trainData'] = trainData[0]
+        session[sessionId]['flightData'] = flightData[0]
+        if session[sessionId].get('flightStatus') != None and session[sessionId].get('flightStatus') == 'full':
+            date = session[sessionId]['flightData']["arrivalDate"]
+        date = [date.split('-')[0], date.split('-')[1], date.split('-')[2]]
+        checkInDate = f"{date[2]}-{date[1]}-{date[0]}"
+        checkOutDate = f"{date[2]}-{date[1]}-{str(int(date[0]) + 1)}"
+        hotelData = hotel.getHotelDetails(session[sessionId]['destData']['city'], checkInDate, checkOutDate, currency, 'comfort')
+        session[sessionId]['hotelData'] = hotelData[0]
+        data = db.getContentData(session[sessionId]['destData']["city"])
+        data = {"sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData'],
+                "deptDate": f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}",
+                "hotelData": session[sessionId]['hotelData'], "guideDetails": db.guideDetails["en"], "content": data,
+                "currency": session[sessionId]['currency'], "sessionid": sessionId}
+        if session[sessionId].get('flightData') != None:
+            data["flightData"] = session[sessionId]['flightData']
+            if session[sessionId]['flightStatus'] == 'partial':
+                data["trainData"] = session[sessionId]['trainData']
+        else:
+            data["trainData"] = session[sessionId]['trainData']
+            searchFormat = (data["trainData"]["source"] + " Railway Station").replace(' ', '%20')
+            data["trainData"]["mapsDeeplink"] = "https://www.google.com/maps/search/?api=1&query=" + searchFormat
+        searchFormat = (data["hotelData"]["name"] + " " + data["destinationData"]["city"]).replace(' ', '%20')
+        data["hotelData"]["mapsDeeplink"] = "https://www.google.com/maps/search/?api=1&query=" + searchFormat
+        data["sessionId"] = sessionId
+        return render_template('chooseGuide.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
+                               pageLang={"language": session[sessionId]['prefferedLang'],
+                                         "codeToLang": db.languageData["codeToLang"],
+                                         "translatedData":
+                                             db.languageData["translatedData"][session[sessionId]['prefferedLang']][
+                                                 "chooseGuide"]})
+
+
+
+
 @app.route('/guide', methods=['GET'])
 def guide():
     data = db.getGuidePlace()

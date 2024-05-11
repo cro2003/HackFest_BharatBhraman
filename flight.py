@@ -23,8 +23,10 @@ def getAirport(query, dest=False):
         return []
     return response['locations'][0]['code']
 
-def getFlightDetails(source, destination, date, currency):
+def getFlightDetails(source, destination, date, currency, type=None):
     srcCode = getAirport(source)
+    if type == 'comfort':
+        destCode = getAirport(destination, dest=False)
     destCode = getAirport(destination, dest=True)
     if srcCode == [] or destCode == []:
         return []
@@ -37,6 +39,8 @@ def getFlightDetails(source, destination, date, currency):
         'curr': currency,
         'locale': 'en',
     }
+    if type=="Comfort":
+        params["selected_cabins"] = "C"
     response = requests.get('https://api.tequila.kiwi.com/v2/search', params=params, headers=header).json()
     if response['data'] == []:
         return []

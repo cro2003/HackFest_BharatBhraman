@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 HOTEL_API_KEY = os.environ.get('HOTEL')
 
-def getHotelDetails(location, checkinDate, checkoutDate, currency): #IN YYYY-MM-DD Form
+def getHotelDetails(location, checkinDate, checkoutDate, currency, type=None): #IN YYYY-MM-DD Form
     hotelData = []
     headers = {
         "X-RapidAPI-Key": HOTEL_API_KEY,
@@ -15,6 +15,9 @@ def getHotelDetails(location, checkinDate, checkoutDate, currency): #IN YYYY-MM-
     locationId = requests.get("https://priceline-com-provider.p.rapidapi.com/v1/hotels/locations", headers=headers, params={"name": location, "search_type": "ALL"}).json()[0]["id"]
     exchngRates = utils.currencyRate(currency)
     querystring = {"date_checkout":checkoutDate,"sort_order":"PRICE","location_id":locationId,"date_checkin":checkinDate, "star_rating_ids":"3.0,3.5,4.0,4.5,5.0"}
+    if type=="comfort":
+        querystring["star_rating_ids"] = "4.0,4.5,5.0"
+        querystring["sort_order"] = "HDR"
     hotelInformation = requests.get("https://priceline-com-provider.p.rapidapi.com/v1/hotels/search", headers=headers, params=querystring).json()
     for hotel in hotelInformation["hotels"]:
         """try:
