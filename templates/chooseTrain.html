@@ -51,7 +51,7 @@
             <div id="page1image"></div>
             <div id="center">
                <div class="neumorphic-box">
-                   {% if data["flightData"]!=[] %}
+                   {% if data["flightData"]!=None %}
                       <div class="section1" >
                          <div class="box">
                             <h3>{{ data["flightData"]["destination"] }}</h3>
@@ -124,18 +124,13 @@
                         </div>
                         <div class="thirddiv">
                             {% if data["flightData"]!=[] %}
-                                <h3>{{ trainInfo["fare"] }} {{ data["flightData"]["currency"] }}</h3>
+                                <h3>{{ trainInfo["fare"] }} {{ INR }}</h3>
                             {% else %}
                                 <h3>{{ trainInfo["fare"] }} INR</h3>
                             {% endif %}
                               <input type="submit" value="{{ pageLang["translatedData"]["slctTrain"] }}" id="bookp">
                         </div>
-                         <input type="hidden" id="reqType" name="reqType" value="chooseTrain">
-                        <input type="hidden" id="trainData" name="trainData" value= "{{ trainInfo }}">
-                        <input type="hidden" id="flightData" name="flightData" value= "{{ data['flightData'] }}">
-                        <input type="hidden" id="sourceData" name="sourceData" value= "{{ data['sourceData'] }}">
-                        <input type="hidden" id="departureDate" name="departureDate" value= "{{ data['deptDate'] }}">
-                        <input type="hidden" id="destinationData" name="destinationData" value= "{{ data['destinationData'] }}">
+
                      <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang["language"] }}">
 
                      </div>

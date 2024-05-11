@@ -50,7 +50,7 @@
                <div class="neumorphic-box">
                   <div class="section1" >
                      <div class="box">
-                        <h3>{{data["sourceData"]["city"]}}</h3>
+                        <h3>{{ data["flightData"][0]["src"] }}</h3>
                      </div>
                   </div>
                   <div class="section1" >
@@ -70,7 +70,7 @@
             <div id="boxes">
 
                 {% for flightInfo in data["flightData"] %}
-                   <form action="/plan-trip" method="post">
+                   <form action="/train-details?sessionId={{ data['sessionId'] }}" method="post">
                       <div class="box1">
                          <div class="box1l">
                             <h3>{{ flightInfo["flightName"] }}</h3>
@@ -91,12 +91,8 @@
                                <h5>{{flightInfo["destination"]}}</h5>
                             </div>
                          </div>
-                         <input type="hidden" id="reqType" name="reqType" value="chooseFlight">
                          <input type="hidden" id="flightData" name="flightData" value= "{{flightInfo}}">
-                         <input type="hidden" id="sourceData" name="sourceData" value= "{{data['sourceData']}}">
-                         <input type="hidden" id="departureDate" name="departureDate" value= "{{data['deptDate']}}">
-                         <input type="hidden" id="destinationData" name="destinationData" value= "{{data['destinationData']}}">
-                          <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang["language"] }}">
+                          <input hidden name="selectedLang" id="selectedLang" value="{{ pageLang['language'] }}">
                          <div class="box1r">
                             <h3>{{flightInfo["fare"]}}</h3>
                             <input type="submit" value="{{ pageLang["translatedData"]["slctFlight"] }}" id="box1submit">
