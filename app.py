@@ -16,8 +16,6 @@ app.secret_key = os.environ.get('SECRET_KEY')
 app.permanent_session_lifetime = timedelta(minutes=5)
 session = {}
 
-
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     defaultLang = "en"
@@ -208,7 +206,7 @@ def tripDetail():
                 "mapsDeeplink": "https://www.google.com/maps/search/?api=1&query=Sanchi%20Stupa%20Bhopal"
             }
         ]
-    #data = languageData["content"][destinationData["city-en"]]
+    #data = content[destinationData["city"]]
     data = {"sourceData": session[sessionId]['sourceData'], "destinationData": session[sessionId]['destData'], "deptDate": f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}", "hotelData": session[sessionId]['hotelData'], "guideDetails": db.guideDetails["en"], "content": data}
     if session[sessionId].get('flightData')!=None:
         data["flightData"] = session[sessionId]['flightData']
