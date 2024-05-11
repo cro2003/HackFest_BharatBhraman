@@ -168,21 +168,24 @@
            <div id="page2">
             <div class="popup" id="popup{{ x }}">
               <div id="boxes1">
-                    {% for guideDetails in data["guideDetails"] %}
-                    <form action="/hotels" method="post">  <div class="box1" > <div class="box1l"><img id="image" src="{{ guideDetails["img"] }}" alt="" srcset=""></div>
-                      <div class="box1c" id="box1c">
-                        <div class="boxc11">
-                          <h2 id="guide_name">{{ guideDetails["guideName"] }}</h2>
+                    {% for guide in data["content"][x]["guide"] %}
+                   <div class="box1" > <div class="box1l"><img id="image" src="https://tse3.mm.bing.net/th?id=OIP.qQs7KLHfMrpZKq-7IzhrsgEyDM&pid=Api&P=0&h=180" alt="" srcset=""></div>
+                    <div class="box1c" id="box1c">
 
-                       <h3 id="langauges" ><span id="langKnown">{{ pageLang["translatedData"]["langKnown"] }}</span>  {{ guideDetails["langKnown"] }}</h3>
-                       <h5 id="Rating_guide">Rating : {{ guideDetails["rating"] }}</h5>
+                      <div class="boxc11">
+                        <h2 id="guide_name">{{ guide['guideName'] }}</h2>
 
 
-                      </div>
+                     <h3 id="langauges" ><span>Languages known:</span> {{ guide['langKnown'] }}</h3>
+                     <h5 id="Rating_guide">Age : {{ guide['guideAge'] }}</h5>
 
-                    </div> <div class="box1r"><h3>Price:₹{{ guideDetails["price"] }}</h3>  <input type="submit" value="Book" id="box1submit"></div></div>
-                  </form>
-                        {% endfor %}
+
+                    </div>
+
+                  </div>
+                       <div class="box1r"><h3>Price:₹{{ guide['price'] }}</h3>  <input type="submit" value="Book" id="box1submit"></div></div>
+
+            {% endfor %}
 
 
               </div>
@@ -219,23 +222,24 @@
            <div id="page2" class="page2">
             <div class="popup" id="popup{{ x }}">
               <div id="boxes1">
-                {% for guideDetails in data["guideDetails"] %}
-                    <div class="box1" > <div class="box1l"><img id="image" src="{{ guideDetails["img"] }}" alt="" srcset=""></div>
-                      <div class="box1c" id="box1c">
+                {% for guide in data["content"][x]["guide"] %}
+                   <div class="box1" > <div class="box1l"><img id="image" src="https://tse3.mm.bing.net/th?id=OIP.qQs7KLHfMrpZKq-7IzhrsgEyDM&pid=Api&P=0&h=180" alt="" srcset=""></div>
+                    <div class="box1c" id="box1c">
 
-                        <div class="boxc11">
-                          <h2 id="guide_name">{{ guideDetails["guideName"] }}</h2>
-
-
-                       <h3 id="langauges" ><span>Languages known:</span> {{ guideDetails["langKnown"] }}</h3>
-                       <h5 id="Rating_guide">Rating : {{ guideDetails["rating"] }}</h5>
+                      <div class="boxc11">
+                        <h2 id="guide_name">{{ guide['guideName'] }}</h2>
 
 
-                      </div>
+                     <h3 id="langauges" ><span>Languages known:</span> {{ guide['langKnown'] }}</h3>
+                     <h5 id="Rating_guide">Age : {{ guide['guideAge'] }}</h5>
 
-                    </div> <div class="box1r"><h3>Price: ₹{{ guideDetails["price"] }}</h3>  <input type="submit" value="Book" id="box1submit"></div></div>
 
-                {% endfor %}
+                    </div>
+
+                  </div>
+                       <div class="box1r"><h3>Price:₹{{ guide['price'] }}</h3>  <input type="submit" value="Book" id="box1submit"></div></div>
+
+            {% endfor %}
               </div>
               <a href="#" onclick="hide('popup{{ x }}')"><i class="ri-close-fill" id="close"></i></a>
             </div>
@@ -283,10 +287,9 @@
         <input type="hidden" id="pageLang" name="pageLang" value= "{{ pageLang }}">
     </form>
 
-    <form name="languageSelector" id="languageSelector" action="/plan-trip" method="post">
+    <form name="languageSelector" id="languageSelector" action="/trip-detail" method="post">
           <input hidden name="selectedLang" id="lang" value="{{ pageLang["language"] }}">
-            <input hidden name="reqType" id="reqType" value="translateDataGuide">
-            <input hidden name="data" id="data" value="{{ data }}">
+            <input hidden name="sessionId" id="sessionId" value="{{ data['sessionId'] }}">
     </div>
     <script>
           const dropdown = document.getElementById('language');
