@@ -10,6 +10,8 @@ import train
 import hotel
 import json
 import utils
+import translators as ts
+
 
 load_dotenv()
 app = Flask(__name__)
@@ -80,7 +82,18 @@ def trainDetails():
         session.pop(sessionId)
         return redirect(url_for('index'))
     data = {"sessionId": sessionId,"src": src, "dest": dest, "deptDate": date, "trainData": trainData, "currency": currency}
-
+    if session[sessionId].get('prefferedLang') != 'en':
+        AcceptedKey = ['trainName', 'source', 'destination']
+        cache_data = {}
+        for traine in data['trainData']:
+            for key in traine.keys():
+                if key in AcceptedKey:
+                    if cache_data.get(traine[key]) is None:
+                        oldData = traine[key]
+                        traine[key] = ts.translate_text(traine[key], from_language="en", to_language="hi")
+                        cache_data[oldData] = traine[key]
+                    else:
+                        traine[key] = cache_data[traine[key]]
     return render_template('chooseTrain.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseTrain"]})

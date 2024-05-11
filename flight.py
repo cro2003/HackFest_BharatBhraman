@@ -18,6 +18,7 @@ def getAirport(query, dest=False):
         'active_only': 'true',
     }
     response = requests.get('https://api.tequila.kiwi.com/locations/query', params=params, headers=header).json()
+    print(response)
     if response['locations'] == [] or (response['locations'][0]['city']['country']['id'] != 'IN' and dest):
         return []
     return response['locations'][0]['code']
