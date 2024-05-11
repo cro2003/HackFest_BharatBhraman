@@ -140,5 +140,44 @@ def tripDetail():
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseGuide"]})
 
+@app.route('/guide', methods=['GET'])
+def guide():
+    data = db.getGuidePlace()
+    print(data)
+    data.pop(0)
+    return render_template('guideIndex.html', data=data)
+
+@app.route('/show-guide', methods=['POST'])
+def showGuide():
+    data = db.showGuide(request.form['name'])
+    return render_template('guideresult.html', data=data)
+
+@app.route('/add-guide', methods=['GET','POST'])
+def addGuidePage():
+    data = db.getGuidePlace()
+    data.pop(0)
+    return render_template("guideRegister.html", data=data)
+
+
+@app.route('/get-guide', methods=['POST'])
+def getGuide():
+    guideName = request.form['first']
+    guideAge = request.form['Age']
+    guideGender = request.form['gender']
+    guidePhoto = "URL"
+    langKnown = request.form['Language']
+    emailId = request.form['email']
+    phoneNum = request.form['mobile']
+    placeName = request.form['Toursist_Place']
+    city = request.form['city']
+    price = int(request.form['price']) + int(request.form['price'])*0.25
+    data = {"guideName": guideName, "guideAge": guideAge, "guideGender": guideGender, "guidePhoto": guidePhoto, "langKnown": langKnown, "emailId": emailId, "phoneNum": phoneNum, "placeName": placeName, "city": city, "price": price}
+    db.postGuideData(placeName, data)
+    flash("Guide Added Successfully", "success")
+    return redirect(url_for('addGuidePage'))
+
+
+
+
 if __name__ == "__main__":
     app.run()

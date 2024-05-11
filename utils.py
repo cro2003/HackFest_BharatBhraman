@@ -17,3 +17,4 @@ def contentGen(city, forceGen=False):
     data = genai.contentCreator(city)
     db.postContentData(city, data)
     print("Content Generated!")
+
