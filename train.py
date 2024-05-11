@@ -171,4 +171,3 @@ def fareCheckerTrain(data, currency):
 
 #print(getTrainDetails('Bhopal', 'Vidisha', '30-05-2024', 'INR'))
 #print(getTrainDetails('Bhopal', 'Vidisha', '30-05-2024', 'INR'))
-

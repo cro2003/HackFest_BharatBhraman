@@ -10,7 +10,6 @@ import train
 import hotel
 import json
 import utils
-import genai
 
 load_dotenv()
 app = Flask(__name__)
@@ -38,7 +37,7 @@ def planTrip():
         return redirect(url_for('index'))
     date = [date.split('-')[2], date.split('-')[1], date.split('-')[0]]  # IN [DD, MM, YYYY]
     sessionId = utils.generateId(source, destination)
-    thread = threading.Thread(target=contentGen, args=(destData["city"],))
+    thread = threading.Thread(target=utils.contentGen, args=(destData["city"],))
     thread.start()
     currency = db.currency.get(sourceData['country_code'].upper())
     session[sessionId] = {"sourceData": sourceData, "destData": destData, "deptDate": date, "prefferedLang": prefferedLang, "currency": currency}
@@ -56,6 +55,7 @@ def flightDetails():
         flightData = flight.getFlightDetails(session[sessionId]['sourceData']['city'], nearestAirport, f"{session[sessionId]['deptDate'][0]}/{session[sessionId]['deptDate'][1]}/{session[sessionId]['deptDate'][2]}", session[sessionId]['currency'])
         session[sessionId]['flightStatus'] = 'partial'
     data = {"sessionId": sessionId, "flightData": flightData, 'deptDate': f"{session[sessionId]['deptDate'][0]}-{session[sessionId]['deptDate'][1]}-{session[sessionId]['deptDate'][2]}"}
+
     return render_template('chooseFlight.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseFlight"]})
@@ -80,6 +80,7 @@ def trainDetails():
         session.pop(sessionId)
         return redirect(url_for('index'))
     data = {"sessionId": sessionId,"src": src, "dest": dest, "deptDate": date, "trainData": trainData, "currency": currency}
+
     return render_template('chooseTrain.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseTrain"]})
@@ -125,14 +126,6 @@ def tripDetail():
     return render_template('chooseGuide.html', data=data, supportedLanguage=db.languageData['supportedLanguages'],
                            pageLang={"language": session[sessionId]['prefferedLang'], "codeToLang": db.languageData["codeToLang"],
                                      "translatedData": db.languageData["translatedData"][session[sessionId]['prefferedLang']]["chooseGuide"]})
-
-def contentGen(city, forceGen=False):
-    contentDb = db.getContentData(city)
-    if not forceGen and contentDb != None:
-        return
-    data = genai.contentCreator(city)
-    db.postContentData(city, data)
-    print("Content Generated!")
 
 if __name__ == "__main__":
     app.run()
