@@ -82,7 +82,7 @@ def getStation(query):
         return []
     return response['items'][0]
 
-def getTrainDetails(source, destination, date, currency):
+def getTrainDetails(source, destination, date, currency, type=None):
     srcStnInfo = getStation(source)
     destStnInfo = getStation(destination)
     if srcStnInfo == [] or destStnInfo == []:
@@ -125,6 +125,8 @@ def getTrainDetails(source, destination, date, currency):
             'urgency': False,
             'd_day': 0,
         }
+        if type == "comfort":
+            postData["journey_class"] = ['1A', '2A', 'EC']
         fareFetchList.append(postData)
         main = {
             "trainNo": trainInfo['train_number'],
