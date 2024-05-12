@@ -411,6 +411,22 @@ def getGuide():
     flash("Guide Added Successfully", "success")
     return redirect(url_for('addGuidePage'))
 
+@app.route('/chat', methods=['GET'])
+def chat():
+    defaultLang = 'en'
+    return render_template('chatBot.html', supportedLanguage = db.languageData['supportedLanguages'], pageLang = {"language": defaultLang, "codeToLang":  db.languageData["codeToLang"], "translatedData": db.languageData["translatedData"][defaultLang]["index"]})
+
+@app.route("/get")
+def get_bot_response():
+    userText = request.args.get('msg')
+    lang = request.args.get('lang')
+    text = genai.chatbotResponse(userText)
+    if lang==None:
+        lang = "en"
+    if lang!='en':
+        text = ts.translate_text(text, to_language=lang)
+    return text
+
 
 
 if __name__ == "__main__":
