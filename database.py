@@ -55,6 +55,11 @@ def checkUser(username, password):
 def registerGuide(username, password):
     collections_manager.update_one({"_id": ObjectId(GUIDE_OBJ_ID)}, {"$set": {username: password, "orders": []}})
 
+def saveTripData(data):
+    collections_manager.update_one({"_id": ObjectId(USER_OBJ_ID)}, {"$set": {"plannedTrip": data}})
+
+def getTripData():
+    return getAllData(USER_OBJ_ID).get('plannedTrip')
 
 languageData = getAllData(LANGUAGE_DATA_OBJ_ID).get('languageData')
 currency = getAllData(LANGUAGE_DATA_OBJ_ID).get('currency')

@@ -427,7 +427,12 @@ def get_bot_response():
         text = ts.translate_text(text, to_language=lang)
     return text
 
-
+@app.route("/save-trip", methods=['POST'])
+def saveTrip():
+    sessionId = request.form['sessionId']
+    db.saveTripData(session[sessionId])
+    flash("Trip Saved Successfully", "success")
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     app.run()

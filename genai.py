@@ -37,12 +37,12 @@ def searchImage(query, city, index):
     allContent[city][index]["imageUrl"] = image.run()
 
 def chatbotResponse(userText):
-    # format = f' SYSTEM PROMPT: You are all In one Travel Guru, Here is Trip planned by User is Departing from {languageData["plannedTrip"]["sourceData"]["city"]} '
-    # if languageData["plannedTrip"]["flightData"] != []:
-    #     format += f', where he will be using Flight From {languageData["plannedTrip"]["flightData"]["src"]} at {languageData["plannedTrip"]["flightData"]["departure"]}, the duration of Flight will be {languageData["plannedTrip"]["flightData"]["duration"]} then it will land at {languageData["plannedTrip"]["flightData"]["destination"]} on {languageData["plannedTrip"]["flightData"]["arrival"]} which is priced at {languageData["plannedTrip"]["flightData"]["fare"]} and the Name of the Flights was {languageData["plannedTrip"]["flightData"]["flightName"]} and Flight Number were {languageData["plannedTrip"]["flightData"]["flightId"]} after that User has to pick the Train from {languageData["plannedTrip"]["trainData"]["source"]} at {languageData["plannedTrip"]["trainData"]["departure"]} then Reach after {languageData["plannedTrip"]["trainData"]["duration"]} at {languageData["plannedTrip"]["trainData"]["destination"]} on {languageData["plannedTrip"]["trainData"]["arrival"]} priced at {languageData["plannedTrip"]["trainData"]["fare"]} {languageData["plannedTrip"]["flightData"]["currency"]} the Train Name was {languageData["plannedTrip"]["trainData"]["trainName"]} & Train Number {languageData["plannedTrip"]["trainData"]["trainNo"]} after that Hotel Stay is been Done at {languageData["plannedTrip"]["hotelData"]["name"]}, Address {languageData["plannedTrip"]["hotelData"]["location"]} which have User Rating of {languageData["plannedTrip"]["hotelData"]["rating"]} which is priced at {languageData["plannedTrip"]["hotelData"]["price"]} {languageData["plannedTrip"]["flightData"]["currency"]}'
-    # response = model.generate_content("USER PROMPT: " + userText + format)  # for the gemini AI model
-    # text = response.text.replace("**", "*").replace("*", "\n")
-    # return text
-    working = True
+    data = db.getTripData()
+    format = f' SYSTEM PROMPT: You are all In one Travel Guru, Here is Trip planned by User is Departing from {data["sourceData"]["city"]} '
+    if data.get("flightData") != None:
+         format += f', where he will be using Flight From {data["flightData"]["src"]} at {data["flightData"]["departure"]}, the duration of Flight will be {data["flightData"]["duration"]} then it will land at {data["flightData"]["destination"]} on {data["flightData"]["arrival"]} which is priced at {data["flightData"]["fare"]} and the Name of the Flights was {data["flightData"]["flightName"]} and Flight Number were {data["flightData"]["flightId"]} after that User has to pick the Train from {data["trainData"]["source"]} at {data["trainData"]["departure"]} then Reach after {data["trainData"]["duration"]} at {data["trainData"]["destination"]} on {data["trainData"]["arrival"]} priced at {data["trainData"]["fare"]} {data["flightData"]["currency"]} the Train Name was {data["trainData"]["trainName"]} & Train Number {data["trainData"]["trainNo"]} after that Hotel Stay is been Done at {data["hotelData"]["name"]}, Address {data["hotelData"]["location"]} which have User Rating of {data["hotelData"]["rating"]} which is priced at {data["hotelData"]["price"]} {data["flightData"]["currency"]}'
+    response = model.generate_content("USER PROMPT: " + userText + format)
+    text = response.text.replace("**", "*").replace("*", "\n")
+    return text
 
 #print(contentCreator("Mumbai"))
