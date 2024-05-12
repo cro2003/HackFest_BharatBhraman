@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Trip Details</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/chooseGuide.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -18,11 +18,11 @@
             <h3>Bhara<span>tभ्र</span>मण</h3>
           </div>
         <div id="nav-c">
-          <a id="home" href="/" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-home-fill" ></i>{{ pageLang["translatedData"]["home"] }}</a>
-            <a id="flight" class="buy" data-tilt data-tilt-scale="1.08" href="/flight"><i class="ri-flight-takeoff-line"></i>{{ pageLang["translatedData"]["flight"] }}</a>
-            <a id="train" href="/train" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-train-fill"></i>{{ pageLang["translatedData"]["train"] }}</a>
-            <a id="hotel" class="buy" data-tilt data-tilt-scale="1.08"href="/hotels"><i class="ri-hotel-fill"></i>{{ pageLang["translatedData"]["hotel"] }}</a>
-          <a id="multi-destination" href="/round_trip" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-checkbox-multiple-fill"></i>{{ pageLang["translatedData"]["multi-destination"] }}</a>
+      <a id="home" href="/" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-home-fill" ></i>{{ pageLang["translatedData"]["home"] }}</a>
+        <a id="flight" class="buy" data-tilt data-tilt-scale="1.08" href="/#"><i class="ri-flight-takeoff-line"></i>{{ pageLang["translatedData"]["flight"] }}</a>
+        <a id="train" href="/#" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-train-fill"></i>{{ pageLang["translatedData"]["train"] }}</a>
+        <a id="hotel" class="buy" data-tilt data-tilt-scale="1.08"href="/guide"><i class="ri-group-line"></i>{{ pageLang["translatedData"]["hotel"] }}</a>
+      <a id="multi-destination" href="/chat" class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-chat-1-fill"></i>{{ pageLang["translatedData"]["multi-destination"] }}</a>
         </div>
           <div id="logo-part2">
 
@@ -39,7 +39,7 @@
         </div>
 
 
-            <a href="/log-in" class="login"class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-user-fill"></i>{{ pageLang["translatedData"]["login"] }}</a>
+            <a href="/add-guide" class="login"class="buy" data-tilt data-tilt-scale="1.08"><i class="ri-user-fill"></i>{{ pageLang["translatedData"]["login"] }}</a>
           </div>
 
 
@@ -283,8 +283,7 @@
     {% endfor %}
     <form action="/save-trip" method="post">
       <input type="submit" value="Save-Trip" id="save" class="btn-hover color-9">
-        <input type="hidden" id="mainData" name="mainData" value= "{{ data }}">
-        <input type="hidden" id="pageLang" name="pageLang" value= "{{ pageLang }}">
+        <input type="hidden" id="sessionId_ST" name="sessionId" value= "{{ data['sessionId'] }}">
     </form>
 
     <form name="languageSelector" id="languageSelector" action="/trip-detail" method="post">
