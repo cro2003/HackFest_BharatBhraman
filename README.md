@@ -60,10 +60,12 @@ Multilingual AI Trip Planner is a comprehensive travel planning application that
 
 ## Process Flow Diagram
 **CUSTOMIZATION OPTION**
+
 ![QUICK_PICK](https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/420962ba-b6d0-4edf-bf1e-7b43faa0ce46)
 
 
 **QUICK PICK OPTION**
+
 ![QUICK_PIC2](https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/dcaa50ec-610f-4341-b4fe-a4ce2e02c8f1)
 
 
