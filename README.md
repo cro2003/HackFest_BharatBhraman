@@ -60,10 +60,14 @@ Multilingual AI Trip Planner is a comprehensive travel planning application that
 
 ## Process Flow Diagram
 **CUSTOMIZATION OPTION**
-![QUICK_PICK.jpeg](..%2F..%2FDownloads%2FQUICK_PICK.jpeg)
+
+![QUICK_PICK](https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/420962ba-b6d0-4edf-bf1e-7b43faa0ce46)
+
 
 **QUICK PICK OPTION**
-![QUICK_PIC2.jpeg](..%2F..%2FDownloads%2FQUICK_PIC2.jpeg)
+
+![QUICK_PIC2](https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/dcaa50ec-610f-4341-b4fe-a4ce2e02c8f1)
+
 
 ## Live & Demo
 **Live**
@@ -73,19 +77,20 @@ https://bharatbhraman.biz/
 https://youtu.be/R1mTj2u-TDM
 
 **ScreenShots**
-![Screenshot 2024-05-12 at 11.51.00 AM.png](..%2FScreenshot%202024-05-12%20at%2011.51.00%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.47.27 AM.png](..%2FScreenshot%202024-05-12%20at%2011.47.27%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.47.15 AM.png](..%2FScreenshot%202024-05-12%20at%2011.47.15%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.46.43 AM.png](..%2FScreenshot%202024-05-12%20at%2011.46.43%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.40.48 AM.png](..%2FScreenshot%202024-05-12%20at%2011.40.48%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.40.39 AM.png](..%2FScreenshot%202024-05-12%20at%2011.40.39%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.40.00 AM.png](..%2FScreenshot%202024-05-12%20at%2011.40.00%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.38.30 AM.png](..%2FScreenshot%202024-05-12%20at%2011.38.30%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.37.52 AM.png](..%2FScreenshot%202024-05-12%20at%2011.37.52%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.37.42 AM.png](..%2FScreenshot%202024-05-12%20at%2011.37.42%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.37.22 AM.png](..%2FScreenshot%202024-05-12%20at%2011.37.22%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.36.57 AM.png](..%2FScreenshot%202024-05-12%20at%2011.36.57%E2%80%AFAM.png)
-![Screenshot 2024-05-12 at 11.36.36 AM.png](..%2FScreenshot%202024-05-12%20at%2011.36.36%E2%80%AFAM.png)
+<img width="1436" alt="Screenshot 2024-05-12 at 11 36 36 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/ac2b2936-ead4-4388-9181-b05f880542c1">
+<img width="1436" alt="Screenshot 2024-05-12 at 11 36 57 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/660800b6-b582-4f67-b465-66467f64f1c5">
+<img width="1438" alt="Screenshot 2024-05-12 at 11 37 22 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/2f9e1699-783d-44e7-82af-082548b64f11">
+<img width="1440" alt="Screenshot 2024-05-12 at 11 37 42 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/2184d6a2-80e7-46fc-ad06-6093635735a5">
+<img width="1440" alt="Screenshot 2024-05-12 at 11 37 52 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/e6f6c9e7-a484-48dc-834a-0476ea2dc60a">
+<img width="1439" alt="Screenshot 2024-05-12 at 11 38 30 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/1ec2eea1-887a-4e0a-9b8d-adf1d8c9fe05">
+<img width="1440" alt="Screenshot 2024-05-12 at 11 40 00 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/34eb01db-41b2-4662-93e7-2f54c0c315de">
+<img width="1440" alt="Screenshot 2024-05-12 at 11 40 39 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/2077379f-41f6-41cf-9838-1009cb4a1c3d">
+<img width="1437" alt="Screenshot 2024-05-12 at 11 40 48 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/292829c7-e897-4568-98aa-e0de7acd4d77">
+<img width="1439" alt="Screenshot 2024-05-12 at 11 46 43 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/d86194e2-c0a9-4d76-8eca-8b40d0098d31">
+<img width="1434" alt="Screenshot 2024-05-12 at 11 47 15 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/60dfcfcd-722b-4b94-af04-17590993e228">
+<img width="1434" alt="Screenshot 2024-05-12 at 11 47 27 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/0ebcf1e7-fe1b-4b14-93c7-aab4b04f875c">
+<img width="1413" alt="Screenshot 2024-05-12 at 11 51 00 AM" src="https://github.com/cro2003/HackFest_BharatBhraman/assets/49191366/9811ca7a-5b3e-4ad4-a622-913be33cae19">
+
 
 ## Installation
 Python Version >3.11
