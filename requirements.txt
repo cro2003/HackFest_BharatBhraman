@@ -4,7 +4,6 @@ flask
 json_repair
 python-dotenv
 tqdm
-PyExecJS
 pathos
 cryptography
 gunicorn
